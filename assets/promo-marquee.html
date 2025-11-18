@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1400, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Kill Switch - Marquee Promo</title>
+	<style>
+		html {
+			margin: 0;
+			padding: 0;
+			width: 1400px;
+			height: 560px;
+			overflow: hidden;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background-attachment: fixed;
+			background-size: 100% 100%;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			width: 1400px;
+			height: 560px;
+			overflow: hidden;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			background-attachment: fixed;
+			background-size: 100% 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-family: 'Dosis', 'Segoe UI', sans-serif;
+			padding: 60px;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.left {
+			flex: 1;
+			color: white;
+		}
+		.icon {
+			font-size: 120px;
+			margin-bottom: 20px;
+		}
+		h1 {
+			font-size: 64px;
+			margin-bottom: 20px;
+			text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+		}
+		.tagline {
+			font-size: 28px;
+			opacity: 0.95;
+			line-height: 1.5;
+			margin-bottom: 30px;
+		}
+		.features {
+			font-size: 20px;
+			line-height: 2;
+			opacity: 0.9;
+		}
+		.right {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.mockup {
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+			width: 400px;
+			padding: 30px;
+			text-align: center;
+		}
+		.mockup h2 {
+			color: #bc2122;
+			font-size: 24px;
+			margin-bottom: 20px;
+		}
+		.mockup-btn {
+			width: 100%;
+			padding: 12px;
+			margin: 8px 0;
+			background: #f5f5f5;
+			border: 2px solid #ddd;
+			border-radius: 6px;
+			font-size: 13px;
+		}
+	</style>
+</head>
+<body>
+	<div class="left">
+		<div class="icon">🔒</div>
+		<h1>Kill Switch</h1>
+		<p class="tagline">Control website access based on your public IP address</p>
+		<div class="features">
+			✓ IP-based whitelist/blacklist<br>
+			✓ One-click domain blocking<br>
+			✓ Real-time protection<br>
+			✓ Easy rule management
+		</div>
+	</div>
+	<div class="right">
+		<div class="mockup">
+			<h2>Kill Switch</h2>
+			<button class="mockup-btn">Whitelist this <strong>domain</strong> with IP</button>
+			<button class="mockup-btn">Blacklist this <strong>domain</strong> with IP</button>
+			<button class="mockup-btn">Whitelist this <strong>page</strong> with IP</button>
+			<button class="mockup-btn">Blacklist this <strong>page</strong> with IP</button>
+			<p style="margin-top: 15px; color: #666; font-size: 12px;">Current IP: 192.168.1.100</p>
+		</div>
+	</div>
+</body>
+</html>
+

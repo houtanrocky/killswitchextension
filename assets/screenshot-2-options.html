@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Kill Switch - Screenshot 2</title>
+	<style>
+		html {
+			margin: 0;
+			padding: 0;
+			width: 1280px;
+			height: 800px;
+			overflow: hidden;
+			background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+			background-attachment: fixed;
+			background-size: 100% 100%;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			width: 1280px;
+			height: 800px;
+			overflow: hidden;
+			background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+			background-attachment: fixed;
+			background-size: 100% 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.container {
+			background: white;
+			border-radius: 12px;
+			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+			width: 700px;
+			padding: 30px;
+		}
+		h1 {
+			color: #bc2122;
+			font-size: 28px;
+			margin-bottom: 20px;
+			text-align: center;
+			font-family: 'Dosis', sans-serif;
+		}
+		.rule-item {
+			background: #f9f9f9;
+			border: 2px solid #ddd;
+			border-radius: 8px;
+			padding: 20px;
+			margin-bottom: 15px;
+		}
+		.rule-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+		}
+		.rule-url {
+			font-weight: bold;
+			color: #333;
+		}
+		.delete-btn {
+			color: #bc2122;
+			text-decoration: none;
+			font-size: 12px;
+		}
+		.input-group {
+			margin-bottom: 10px;
+		}
+		.input-group label {
+			display: block;
+			margin-bottom: 5px;
+			color: #666;
+			font-size: 14px;
+		}
+		input, textarea {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		textarea {
+			height: 60px;
+			resize: vertical;
+		}
+		.actions {
+			text-align: center;
+			margin-top: 20px;
+		}
+		.action-btn {
+			display: inline-block;
+			padding: 12px 24px;
+			margin: 0 10px;
+			background: #bc2122;
+			color: white;
+			text-decoration: none;
+			border-radius: 6px;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Kill Switch - Rules Management</h1>
+		<div class="rule-item">
+			<div class="rule-header">
+				<span class="rule-url">example.com</span>
+				<a href="#" class="delete-btn">REMOVE RULE</a>
+			</div>
+			<div class="input-group">
+				<label>URL</label>
+				<input type="text" value="example.com" disabled>
+			</div>
+			<div class="input-group">
+				<label>ALLOWED IPS (separate with comma)</label>
+				<textarea>192.168.1.100, 10.0.0.1</textarea>
+			</div>
+		</div>
+		<div class="actions">
+			<a href="#" class="action-btn">ADD NEW RULE</a>
+			<a href="#" class="action-btn">SAVE RULES</a>
+		</div>
+	</div>
+</body>
+</html>
+
