@@ -1,0 +1,43 @@
+{
+	"manifest_version": 3,
+	"name": "Kill Switch Extension",
+	"short_name": "Kill Switch Extension",
+	"description": "Control website access based on your public IP address. Create whitelist or blacklist rules to automatically block or allow specific domains when your IP matches configured conditions.",
+	"version": "1.0.0",
+	"version_name": "1.0.0-beta",
+	"author": "github.com/houtan-rocky",
+	"background": {
+		"service_worker": "service_worker.js"
+	},
+	"icons": {
+		"48": "/img/icon-48x48-red.png",
+		"128": "/img/icon-128x128-red.png",
+		"512": "/img/icon-512x512-red.png"
+	},
+	"permissions": [
+		"storage",
+		"declarativeNetRequest",
+		"scripting",
+		"tabs"
+	],
+	"host_permissions": [
+		"<all_urls>"
+	],
+	"declarative_net_request": {
+		"rule_resources": []
+	},
+	"options_ui": {
+		"page": "html/ks-options.html",
+		"open_in_tab": false
+	},
+	"action": {
+		"default_icon": {
+			"16": "/img/icon-48x48-grey.png",
+			"32": "/img/icon-48x48-grey.png",
+			"48": "/img/icon-48x48-grey.png",
+			"128": "/img/icon-128x128-grey.png"
+		},
+		"default_popup": "html/ks-popup.html",
+		"default_title": "Kill Switch Extension"
+	}
+}

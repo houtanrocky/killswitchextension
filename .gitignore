@@ -1,0 +1,41 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+*.bak
+
+# Build artifacts
+dist/
+build/
+*.zip
+*.crx
+*.pem
+
+# Node modules (if any)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment files
+.env
+.env.local
+
+# Chrome extension specific
+*.crx
+*.pem
+*.zip
