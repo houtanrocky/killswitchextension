@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "Kill Switch Extension",
 	"short_name": "Kill Switch Extension",
-	"description": "Control website access based on your public IP address. Create whitelist or blacklist rules to automatically block or allow specific domains when your IP matches configured conditions.",
+	"description": "Control website access based on your public IP. Create whitelist or blacklist rules to block or allow domains when your IP matches.",
 	"version": "1.0.0",
 	"version_name": "1.0.0-beta",
 	"author": "github.com/houtan-rocky",
