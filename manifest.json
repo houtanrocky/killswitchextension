@@ -17,7 +17,6 @@
 	"permissions": [
 		"storage",
 		"declarativeNetRequest",
-		"scripting",
 		"tabs"
 	],
 	"host_permissions": [
