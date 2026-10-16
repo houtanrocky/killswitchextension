@@ -7,5 +7,6 @@ This directory is the source of truth for the public listing copy and privacy di
 - `description.md` is the readable, linked version for repository review.
 - `privacy-disclosure.md` records the data-use wording needed for the Store privacy form.
 - `product-data.json` contains product, permissions, status, privacy, and asset metadata.
+- `release-notes.md` contains the version 1.1.0 update notes.
 
 The published homepage and support URLs are defined in `homepage-url.txt` and `support-url.txt`. Update these files if the GitHub account or repository name changes.
