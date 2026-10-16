@@ -1,133 +1,23 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>Kill Switch - Screenshot 2</title>
-	<style>
-		html {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-		}
-		body {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		.container {
-			background: white;
-			border-radius: 12px;
-			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-			width: 700px;
-			padding: 30px;
-		}
-		h1 {
-			color: #bc2122;
-			font-size: 28px;
-			margin-bottom: 20px;
-			text-align: center;
-			font-family: 'Dosis', sans-serif;
-		}
-		.rule-item {
-			background: #f9f9f9;
-			border: 2px solid #ddd;
-			border-radius: 8px;
-			padding: 20px;
-			margin-bottom: 15px;
-		}
-		.rule-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 15px;
-		}
-		.rule-url {
-			font-weight: bold;
-			color: #333;
-		}
-		.delete-btn {
-			color: #bc2122;
-			text-decoration: none;
-			font-size: 12px;
-		}
-		.input-group {
-			margin-bottom: 10px;
-		}
-		.input-group label {
-			display: block;
-			margin-bottom: 5px;
-			color: #666;
-			font-size: 14px;
-		}
-		input, textarea {
-			width: 100%;
-			padding: 10px;
-			border: 1px solid #ddd;
-			border-radius: 4px;
-			font-size: 14px;
-		}
-		textarea {
-			height: 60px;
-			resize: vertical;
-		}
-		.actions {
-			text-align: center;
-			margin-top: 20px;
-		}
-		.action-btn {
-			display: inline-block;
-			padding: 12px 24px;
-			margin: 0 10px;
-			background: #bc2122;
-			color: white;
-			text-decoration: none;
-			border-radius: 6px;
-			font-size: 14px;
-		}
-	</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, initial-scale=1">
+  <title>Kill Switch - Searchable rules</title>
+  <link rel="stylesheet" href="./store-mockup.css">
 </head>
 <body>
-	<div class="container">
-		<h1>Kill Switch - Rules Management</h1>
-		<div class="rule-item">
-			<div class="rule-header">
-				<span class="rule-url">example.com</span>
-				<a href="#" class="delete-btn">REMOVE RULE</a>
-			</div>
-			<div class="input-group">
-				<label>URL</label>
-				<input type="text" value="example.com" disabled>
-			</div>
-			<div class="input-group">
-				<label>ALLOWED IPS (separate with comma)</label>
-				<textarea>192.168.1.100, 10.0.0.1</textarea>
-			</div>
-		</div>
-		<div class="actions">
-			<a href="#" class="action-btn">ADD NEW RULE</a>
-			<a href="#" class="action-btn">SAVE RULES</a>
-		</div>
-	</div>
+  <main class="stage">
+    <section class="options" aria-label="Kill Switch Manage rules page">
+      <aside class="options-side"><p class="eyebrow">KILL SWITCH</p><h1>Manage every rule in one calm workspace.</h1><p>Search by domain, page, or IP. Edit targets without losing unsaved changes, then save once.</p><div class="side-stat"><b>100</b><span>rules ready to search</span></div></aside>
+      <section class="options-main">
+        <header class="main-top"><div><p class="eyebrow">ACCESS CONTROL</p><h2>Your rules</h2></div><span class="count">1 of 100 rules</span></header>
+        <div class="privacy-note"><span class="privacy-check">✓</span><div><b>Your rules stay on this device</b><small>Only the IP lookup request leaves the extension.</small></div></div>
+        <label class="search">Search rules<div>vpn.example.com</div></label>
+        <article class="rule"><div class="rule-head"><span class="rule-title">Access rule</span><span class="remove">REMOVE</span></div><label class="field">WEBSITE OR PAGE<div class="field-box">vpn.example.com</div></label><label class="field">IP CONDITIONS<div class="field-box">203.0.113.10, !198.51.100.20</div></label><p class="hint">Use ! before an IP to limit only on that address.</p></article>
+        <div class="actions"><span class="action-button quiet">Discard changes</span><span class="action-button primary">Save changes</span></div>
+      </section>
+    </section>
+  </main>
 </body>
 </html>
-

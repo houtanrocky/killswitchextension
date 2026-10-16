@@ -1,106 +1,20 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>Kill Switch - Screenshot 3</title>
-	<style>
-		html {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-		}
-		body {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		.container {
-			background: white;
-			border-radius: 12px;
-			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-			width: 1000px;
-			padding: 40px;
-		}
-		h1 {
-			color: #bc2122;
-			font-size: 36px;
-			margin-bottom: 30px;
-			text-align: center;
-			font-family: 'Dosis', sans-serif;
-		}
-		.features {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
-			gap: 30px;
-		}
-		.feature {
-			background: #f9f9f9;
-			border: 2px solid #ddd;
-			border-radius: 8px;
-			padding: 25px;
-		}
-		.feature-icon {
-			font-size: 48px;
-			margin-bottom: 15px;
-		}
-		.feature h3 {
-			color: #bc2122;
-			font-size: 20px;
-			margin-bottom: 10px;
-		}
-		.feature p {
-			color: #666;
-			line-height: 1.6;
-			font-size: 14px;
-		}
-	</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, initial-scale=1">
+  <title>Kill Switch - Page status and rules</title>
+  <link rel="stylesheet" href="./store-mockup.css">
 </head>
 <body>
-	<div class="container">
-		<h1>Kill Switch Features</h1>
-		<div class="features">
-			<div class="feature">
-				<div class="feature-icon">🔒</div>
-				<h3>IP-Based Access Control</h3>
-				<p>Automatically block or allow websites based on your current public IP address. Perfect for security and privacy.</p>
-			</div>
-			<div class="feature">
-				<div class="feature-icon">⚡</div>
-				<h3>Quick Whitelist/Blacklist</h3>
-				<p>One-click buttons to whitelist or blacklist domains or specific pages with your current IP address.</p>
-			</div>
-			<div class="feature">
-				<div class="feature-icon">📋</div>
-				<h3>Rule Management</h3>
-				<p>Easily manage multiple rules with custom IP whitelists and blacklists for different domains.</p>
-			</div>
-			<div class="feature">
-				<div class="feature-icon">🛡️</div>
-				<h3>Real-Time Protection</h3>
-				<p>Blocks websites instantly when your IP changes, ensuring continuous protection without manual intervention.</p>
-			</div>
-		</div>
-	</div>
+  <main class="stage">
+    <section class="feature-board" aria-label="Kill Switch features">
+      <div class="brand-row"><div class="brand-mark">K</div><div><p class="eyebrow">KILL SWITCH</p><b>Connection guard</b></div></div>
+      <h1>Access control that reflects the network you are actually using.</h1>
+      <p class="lede">Define local rules for trusted IPs, domains, and individual pages. The browser action icon keeps the current-page result visible.</p>
+      <div class="feature-grid"><article class="feature"><span class="num">01 / RULES</span><h2>Domain or page targets</h2><p>Use a hostname for a whole domain or a URL for one page path.</p></article><article class="feature"><span class="num">02 / SEARCH</span><h2>Large lists stay usable</h2><p>Search domains, page URLs, and IP conditions across 100 rules or more.</p></article><article class="feature"><span class="num">03 / PRIVACY</span><h2>Local by default</h2><p>Rules stay in the browser. One no-referrer IP lookup supports evaluation.</p></article></div>
+      <div class="status-strip"><span class="status-chip chip-green"><i></i>Allowed page</span><span class="status-chip chip-red"><i></i>Limited page</span><span class="status-chip chip-gray"><i></i>No matching rule</span></div>
+    </section>
+  </main>
 </body>
 </html>
-

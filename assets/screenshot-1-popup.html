@@ -1,115 +1,25 @@
-<!DOCTYPE html>
-<html>
+﻿<!doctype html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>Kill Switch - Screenshot 1</title>
-	<style>
-		html {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-		}
-		body {
-			margin: 0;
-			padding: 0;
-			width: 1280px;
-			height: 800px;
-			overflow: hidden;
-			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-			background-attachment: fixed;
-			background-size: 100% 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
-		.container {
-			background: white;
-			border-radius: 12px;
-			box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-			width: 400px;
-			padding: 30px;
-			text-align: center;
-		}
-		h1 {
-			color: #bc2122;
-			font-size: 32px;
-			margin-bottom: 20px;
-			font-family: 'Dosis', sans-serif;
-		}
-		.button {
-			width: 100%;
-			padding: 15px;
-			margin: 10px 0;
-			background: #f5f5f5;
-			border: 2px solid #ddd;
-			border-radius: 8px;
-			font-size: 14px;
-			cursor: pointer;
-			transition: all 0.3s;
-		}
-		.button:hover {
-			background: #e8e8e8;
-			border-color: #bc2122;
-		}
-		.button strong {
-			color: #bc2122;
-		}
-		.rules-link {
-			margin: 20px 0;
-			font-size: 18px;
-		}
-		.rules-link a {
-			color: #bc2122;
-			text-decoration: underline;
-		}
-		.ip-display {
-			margin-top: 20px;
-			padding: 10px;
-			background: #f9f9f9;
-			border-radius: 6px;
-			font-size: 14px;
-			color: #666;
-		}
-		.ip-value {
-			color: #bc2122;
-			font-weight: bold;
-		}
-	</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280, initial-scale=1">
+  <title>Kill Switch - Popup status</title>
+  <link rel="stylesheet" href="./store-mockup.css">
 </head>
 <body>
-	<div class="container">
-		<h1>Kill Switch</h1>
-		<button class="button">
-			Whitelist this <strong>domain</strong> with IP
-		</button>
-		<button class="button">
-			Blacklist this <strong>domain</strong> with IP
-		</button>
-		<button class="button">
-			Whitelist this <strong>page</strong> with IP
-		</button>
-		<button class="button">
-			Blacklist this <strong>page</strong> with IP
-		</button>
-		<div class="rules-link">
-			<a href="#">MY RULES</a>
-		</div>
-		<div class="ip-display">
-			Current IP: <span class="ip-value">192.168.1.100</span>
-		</div>
-	</div>
+  <main class="stage">
+    <div class="browser">
+      <div class="browser-bar"><div class="browser-dots"><i></i><i></i><i></i></div><div class="address">https://example.com/private</div></div>
+      <div class="page"><div class="page-watermark">Your work, protected by context.</div><p class="page-copy">A realistic page backdrop keeps the focus on the extension's current-page decision.</p><div class="page-line"></div><div class="page-line short"></div></div>
+      <section class="popup" aria-label="Kill Switch popup">
+        <header class="popup-header"><div class="brand-mark">K</div><div><p class="eyebrow">KILL SWITCH</p><h1>Connection guard</h1></div><span class="gear">⚙</span></header>
+        <section class="status-card"><div class="status-row"><span class="status-dot"></span><span class="status-label">Rule applied to this page</span></div><h2>example.com/private</h2><p>A matching allow rule covers this page.</p></section>
+        <section class="connection-card"><div><span class="card-label">Detected public IP</span><strong>203.0.113.10</strong></div><span class="provider">Stored locally</span></section>
+        <div class="section-heading"><div><p class="eyebrow">QUICK ACTIONS</p><h2>Change this page</h2></div></div>
+        <div class="action-grid"><div class="action allow"><span>Allow site</span><small>Whole domain</small></div><div class="action limit"><span>Limit site</span><small>Whole domain</small></div><div class="action allow"><span>Allow page</span><small>Only this URL</small></div><div class="action limit"><span>Limit page</span><small>Only this URL</small></div></div>
+        <footer class="popup-footer"><span>Rules stay on this device.</span><span class="manage">Manage rules →</span></footer>
+      </section>
+    </div>
+  </main>
 </body>
 </html>
-
