@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Kill Switch controls website access using your public IP, with local rules for domains and individual pages.">
+    <title>Kill Switch | IP-based website access control</title>
+    <link rel="icon" href="./img/kill-switch-icon.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./"><img src="./img/kill-switch-icon.png" alt="" width="40" height="40"><span>Kill Switch</span></a>
+      <nav aria-label="Primary navigation"><a href="./#features">Features</a><a href="./privacy.html">Privacy</a><a href="./support.html">Support</a><a class="nav-button" href="https://github.com/houtanrocky/killswitchextension">Source code</a></nav>
+    </header>
+
+    <main>
+      <section class="hero page-width">
+        <div class="hero-copy">
+          <p class="eyebrow">IP-BASED WEBSITE ACCESS CONTROL</p>
+          <h1>Keep sensitive sites available only on the connections you trust.</h1>
+          <p class="hero-lede">Kill Switch lets you allow or limit domains and individual pages based on your public IP. It is useful for VPN safeguards, trusted-network rules, and focused access control.</p>
+          <div class="hero-actions"><a class="button button-primary" href="./support.html#quick-start">Get started</a><a class="button button-secondary" href="./privacy.html">Read the privacy policy</a></div>
+          <p class="microcopy">Rules stay in your browser. The extension uses one necessary public-IP lookup.</p>
+        </div>
+        <div class="hero-panel" aria-label="Extension status examples">
+          <div class="panel-top"><span class="panel-label">CURRENT PAGE</span><span class="status-badge status-green"><i></i>Allowed</span></div>
+          <strong>https://example.com/private</strong>
+          <div class="panel-ip"><span>Detected public IP</span><b>203.0.113.10</b></div>
+          <div class="panel-rule"><span class="rule-icon">✓</span><span><b>Trusted network rule</b><small>Matches the current IP</small></span></div>
+          <div class="panel-rule panel-rule-muted"><span class="rule-icon">⌕</span><span><b>Search 100 rules</b><small>Find a domain, page, or IP</small></span></div>
+        </div>
+      </section>
+
+      <section id="features" class="section page-width">
+        <p class="eyebrow">WHY KILL SWITCH</p><h2>Clear control when your network changes.</h2>
+        <div class="feature-grid">
+          <article class="feature-card"><span class="feature-number">01</span><h3>Allow or limit by IP</h3><p>Create allow rules for trusted IPs or limit rules for networks where a site should be unavailable.</p></article>
+          <article class="feature-card"><span class="feature-number">02</span><h3>Domains or individual pages</h3><p>Use <code>example.com</code> for a domain or a full URL for a narrower page-level rule.</p></article>
+          <article class="feature-card"><span class="feature-number">03</span><h3>Find rules quickly</h3><p>Search large rule lists by target or IP, then edit or remove the matching rule in one place.</p></article>
+          <article class="feature-card"><span class="feature-number">04</span><h3>See status at a glance</h3><p>Green means a rule allows the page, red means it is limited, and gray means no rule matches.</p></article>
+        </div>
+      </section>
+
+      <section class="split-section page-width">
+        <div><p class="eyebrow">HOW IT WORKS</p><h2>Local rules, one small lookup.</h2><p>When rules need evaluation, Kill Switch checks the public IP reported by <code>api.ipify.org</code>. Website targets and configured rules remain local to the browser.</p><p>If a lookup fails, a previously verified IP may be used. If no verified IP is available, configured targets remain blocked until the IP can be checked.</p></div>
+        <ol class="steps"><li><b>Open a page</b><span>Use the popup to see its current status.</span></li><li><b>Create a rule</b><span>Allow or limit a site or only that page.</span></li><li><b>Manage at scale</b><span>Search, edit, and save your rules in the options page.</span></li></ol>
+      </section>
+
+      <section class="privacy-callout page-width"><div><p class="eyebrow">PRIVACY BY DESIGN</p><h2>Your targets stay on this device.</h2><p>No account, analytics, remote fonts, browsing-history collection, or upload of your configured websites. See exactly what leaves the browser in the privacy policy.</p></div><a class="button button-light" href="./privacy.html">View privacy details</a></section>
+    </main>
+
+    <footer class="site-footer page-width"><span>Kill Switch Extension · Version 1.1.0</span><span><a href="./support.html">Support</a> · <a href="https://github.com/houtanrocky/killswitchextension">GitHub</a></span></footer>
+  </body>
+</html>

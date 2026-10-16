@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kill Switch Extension</title>
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="popup-header">
+        <div class="brand-mark" aria-hidden="true">K</div>
+        <div>
+          <p class="eyebrow">KILL SWITCH</p>
+          <h1>Connection guard</h1>
+        </div>
+        <button id="rules" class="icon-button" type="button" aria-label="Open rules">⚙</button>
+      </header>
+
+      <section id="status-card" class="status-card status-grey" aria-live="polite">
+        <div class="status-row">
+          <span id="status-dot" class="status-dot" aria-hidden="true"></span>
+          <span id="status-label" class="status-label">Checking page…</span>
+        </div>
+        <h2 id="page-target">Current page</h2>
+        <p id="status-detail">Reading your local rule status.</p>
+      </section>
+
+      <section class="connection-card" aria-label="Connection details">
+        <div>
+          <span class="card-label">Detected public IP</span>
+          <strong id="current-ip">Checking…</strong>
+        </div>
+        <span id="provider-status" class="provider-status">Local status</span>
+      </section>
+
+      <section class="actions-section" aria-labelledby="actions-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">QUICK ACTIONS</p>
+            <h2 id="actions-title">Change this page</h2>
+          </div>
+        </div>
+        <div class="action-grid">
+          <button id="wl_domain" class="action-button action-allow" type="button">
+            <span>Allow site</span><small>Whole domain</small>
+          </button>
+          <button id="bl_domain" class="action-button action-limit" type="button">
+            <span>Limit site</span><small>Whole domain</small>
+          </button>
+          <button id="wl_url" class="action-button action-allow" type="button">
+            <span>Allow page</span><small>Only this URL</small>
+          </button>
+          <button id="bl_url" class="action-button action-limit" type="button">
+            <span>Limit page</span><small>Only this URL</small>
+          </button>
+        </div>
+      </section>
+
+      <footer class="popup-footer">
+        <span>Rules stay on this device.</span>
+        <button id="manage-rules" class="manage-button" type="button">Manage rules →</button>
+      </footer>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

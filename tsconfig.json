@@ -1,0 +1,9 @@
+{
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true
+  },
+  "files": [".wxt/wxt.d.ts"],
+  "include": ["src", "test", "wxt.config.ts", "vitest.config.ts"]
+}

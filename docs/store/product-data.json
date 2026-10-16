@@ -1,0 +1,48 @@
+{
+  "product": {
+    "name": "Kill Switch Extension",
+    "version": "1.1.0",
+    "manifestVersion": 3,
+    "platforms": ["Chrome", "Firefox"],
+    "purpose": "IP-based website access control for domains and individual pages",
+    "repository": "https://github.com/houtanrocky/killswitchextension"
+  },
+  "storeListing": {
+    "title": "Kill Switch Extension",
+    "summary": "Block or allow websites by your public IP. Create rules for domains and individual pages.",
+    "category": "Privacy & Security",
+    "language": "English",
+    "homepageUrl": "https://houtanrocky.github.io/killswitchextension/",
+    "supportUrl": "https://houtanrocky.github.io/killswitchextension/support.html",
+    "officialUrl": null,
+    "googleAnalytics": "opted-out",
+    "descriptionFile": "description.txt"
+  },
+  "statusColors": {
+    "green": "A matching rule allows the current page",
+    "red": "A matching rule limits the current page",
+    "gray": "No configured rule matches the current page"
+  },
+  "privacy": {
+    "ipLookup": "https://api.ipify.org",
+    "requestPolicy": "no-referrer",
+    "remoteFonts": false,
+    "analytics": false,
+    "configuredTargetsSentToLookup": false,
+    "localRuleStorage": true,
+    "cachedIpFallback": true,
+    "blocksWhenNoVerifiedIp": true
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "declarativeNetRequest",
+    "<all_urls>"
+  ],
+  "assets": {
+    "storeIcon": "../img/kill-switch-icon.png",
+    "screenshots": "../../assets/screenshot-*.html",
+    "smallPromoTile": "../../assets/promo-small.html",
+    "marqueePromoTile": "../../assets/promo-marquee.html"
+  }
+}

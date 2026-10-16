@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Kill Switch setup instructions, troubleshooting, privacy answers, and support information.">
+    <title>Support | Kill Switch</title>
+    <link rel="icon" href="./img/kill-switch-icon.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header"><a class="brand" href="./"><img src="./img/kill-switch-icon.png" alt="" width="40" height="40"><span>Kill Switch</span></a><nav aria-label="Primary navigation"><a href="./">Home</a><a href="./privacy.html">Privacy</a><a class="nav-button" href="https://github.com/houtanrocky/killswitchextension/issues">Report an issue</a></nav></header>
+    <main class="page-width narrow">
+      <section class="page-intro"><p class="eyebrow">SUPPORT</p><h1>Get Kill Switch working the way you expect.</h1><p>Use the guide below for setup and the most common rule and IP lookup questions. If something still fails, open a GitHub issue with the browser, extension version, and a description of the rule pattern involved. Do not include private URLs or IP addresses in a public issue.</p></section>
+      <section id="quick-start" class="content-section"><h2>Quick start</h2><ol class="numbered-list"><li>Install the extension and open a normal <code>http</code> or <code>https</code> page.</li><li>Open the Kill Switch popup and choose <b>Allow site</b>, <b>Limit site</b>, <b>Allow page</b>, or <b>Limit page</b>.</li><li>Open <b>Manage rules</b> to edit targets and IP conditions. Search works across domains, page URLs, and IP values.</li><li>Save changes, then reload the tab if the page was already open.</li></ol></section>
+      <section class="content-section"><h2>Rule format</h2><p>Use a hostname such as <code>example.com</code> for a domain. Use a full URL such as <code>https://example.com/private</code> for a page path. Enter multiple IPv4 values separated by commas. Prefix an IP with <code>!</code> to limit that target when the public IP matches it.</p><div class="example-grid"><div><span>Allow only on one IP</span><code>203.0.113.10</code></div><div><span>Limit on one IP</span><code>!198.51.100.20</code></div><div><span>Mixed conditions</span><code>203.0.113.10, !198.51.100.20</code></div></div></section>
+      <section class="content-section"><h2>Common questions</h2><details open><summary>Why is the icon gray?</summary><p>Gray means no configured rule matches the current page. Browser-internal pages such as <code>chrome://</code> cannot be controlled by extension network rules.</p></details><details><summary>Why is the icon red?</summary><p>Red means a matching rule currently limits the page. If the IP lookup cannot be completed and no verified cached IP is available, configured targets remain blocked.</p></details><details><summary>What does the IP service receive?</summary><p>The extension makes a no-referrer request to <code>api.ipify.org</code>. That service can see the public IP and ordinary network request metadata. Your configured domains, page URLs, and rules are not sent.</p></details><details><summary>How do I remove all rules?</summary><p>Open Manage rules, remove each rule, then choose Save changes. The extension clears its dynamic blocking rules when no targets remain.</p></details></section>
+      <section class="support-contact"><h2>Still need help?</h2><p>Open a support issue on GitHub. Include steps to reproduce and the expected versus actual status. Keep sensitive destinations and network details private.</p><a class="button button-primary" href="https://github.com/houtanrocky/killswitchextension/issues">Open GitHub support</a></section>
+    </main>
+    <footer class="site-footer page-width"><span>Kill Switch Extension · Version 1.1.0</span><a href="./">Back to home</a></footer>
+  </body>
+</html>

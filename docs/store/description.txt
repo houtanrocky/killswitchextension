@@ -1,0 +1,30 @@
+KILL SWITCH EXTENSION
+
+Control website access using your public IP.
+
+Kill Switch lets you allow or limit domains and individual pages based on the network you are connected to. Create rules for trusted home or VPN IPs and keep selected sites limited when your connection changes.
+
+FEATURES
+
+- IP-based allow and limit rules for domains or individual pages.
+- One-click actions for the current site or only the current page.
+- Searchable rule manager for large rule lists.
+- Multiple IPv4 conditions per rule. Prefix an IP with ! to limit the target on that address.
+- Status icon for the current page: green means allowed, red means limited, and gray means no rule matches.
+- Local rule storage with no analytics, tracking, remote fonts, or browsing-history collection.
+- Cross-browser Manifest V3 builds for Chrome and Firefox.
+
+HOW IT WORKS
+
+The extension checks your public IP with one no-referrer request to api.ipify.org, then evaluates the matching local rules. If the lookup fails, a previously verified IP may be used. If no verified IP is available, configured targets remain blocked until an IP can be checked.
+
+PRIVACY
+
+Rules, targets, and status data stay in your browser. The IP lookup service receives the public IP of the network making the request and ordinary request metadata. Your configured domains, page URLs, and rule list are not sent to that service. No account is required.
+
+GET STARTED
+
+Open a page, open the Kill Switch popup, and choose Allow site, Limit site, Allow page, or Limit page. Open Manage rules to search, edit, or remove rules.
+
+Support: https://houtanrocky.github.io/killswitchextension/support.html
+Privacy: https://houtanrocky.github.io/killswitchextension/privacy.html

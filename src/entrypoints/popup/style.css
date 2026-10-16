@@ -1,0 +1,53 @@
+:root {
+	font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	--ink: #17202a;
+	--muted: #667483;
+	--line: #e0e6ec;
+	--surface: #ffffff;
+	--canvas: #f4f7fa;
+	--accent: #bf2932;
+	--green: #16745a;
+}
+
+* { box-sizing: border-box; }
+body { width: 360px; margin: 0; background: var(--canvas); color: var(--ink); }
+button { font: inherit; }
+.popup-shell { padding: 22px; }
+.popup-header, .status-row, .connection-card, .popup-footer, .section-heading { display: flex; align-items: center; }
+.popup-header { gap: 11px; margin-bottom: 18px; }
+.brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; background: var(--accent); color: white; font-weight: 850; box-shadow: 0 5px 12px rgb(191 41 50 / 22%); }
+.eyebrow { margin: 0 0 5px; color: var(--accent); font-size: 9px; font-weight: 850; letter-spacing: .16em; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: 17px; letter-spacing: -.02em; }
+h2 { margin-bottom: 0; font-size: 15px; letter-spacing: -.015em; }
+.icon-button { width: 30px; height: 30px; margin-left: auto; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: 17px; }
+.icon-button:hover { background: #e9eef2; color: var(--ink); }
+
+.status-card { margin-bottom: 12px; padding: 17px; border: 1px solid var(--line); border-radius: 15px; background: var(--surface); box-shadow: 0 7px 22px rgb(29 45 61 / 5%); }
+.status-row { gap: 8px; margin-bottom: 13px; }
+.status-dot { width: 9px; height: 9px; border-radius: 50%; background: #9aa6b2; }
+.status-label { color: var(--muted); font-size: 11px; font-weight: 800; }
+.status-card h2 { margin-bottom: 7px; font-size: 19px; }
+.status-card p { margin-bottom: 0; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.status-green .status-dot { background: var(--green); box-shadow: 0 0 0 4px #d8f1e8; }
+.status-green .status-label { color: var(--green); }
+.status-red .status-dot { background: var(--accent); box-shadow: 0 0 0 4px #f8dfe1; }
+.status-red .status-label { color: var(--accent); }
+
+.connection-card { justify-content: space-between; gap: 12px; margin-bottom: 24px; padding: 13px 15px; border: 1px solid var(--line); border-radius: 12px; background: rgb(255 255 255 / 65%); }
+.card-label { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; font-weight: 700; }
+.connection-card strong { font-size: 14px; letter-spacing: .02em; }
+.provider-status { color: var(--muted); font-size: 10px; }
+.section-heading { justify-content: space-between; margin-bottom: 12px; }
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.action-button { display: grid; gap: 4px; min-height: 66px; padding: 12px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); color: var(--ink); cursor: pointer; text-align: left; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+.action-button:hover { border-color: #b8c4cf; box-shadow: 0 5px 12px rgb(29 45 61 / 6%); transform: translateY(-1px); }
+.action-button:disabled { cursor: wait; opacity: .58; transform: none; }
+.action-button span { font-size: 12px; font-weight: 800; }
+.action-button small { color: var(--muted); font-size: 10px; }
+.action-allow span { color: var(--green); }
+.action-limit span { color: var(--accent); }
+.is-loading span::after { content: "…"; }
+.popup-footer { justify-content: space-between; gap: 10px; margin-top: 22px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 10px; }
+.manage-button { padding: 0; border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 11px; font-weight: 800; }
+.manage-button:hover { text-decoration: underline; }

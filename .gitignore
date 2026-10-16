@@ -28,8 +28,11 @@ build/
 
 # Node modules (if any)
 node_modules/
-package-lock.json
 yarn.lock
+
+# WXT generated files
+.output/
+.wxt/
 
 # Environment files
 .env

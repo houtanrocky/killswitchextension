@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Privacy policy for Kill Switch Extension.">
+    <title>Privacy Policy | Kill Switch</title>
+    <link rel="icon" href="./img/kill-switch-icon.png" type="image/png">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="site-header"><a class="brand" href="./"><img src="./img/kill-switch-icon.png" alt="" width="40" height="40"><span>Kill Switch</span></a><nav aria-label="Primary navigation"><a href="./">Home</a><a href="./support.html">Support</a><a class="nav-button" href="https://github.com/houtanrocky/killswitchextension">Source code</a></nav></header>
+    <main class="page-width narrow">
+      <section class="page-intro"><p class="eyebrow">PRIVACY POLICY</p><h1>Kill Switch keeps your rules local.</h1><p>Last updated: October 16, 2026</p></section>
+      <section class="content-section"><h2>What the extension processes</h2><p>Kill Switch reads the active tab URL locally to decide whether a configured rule matches. Domains, page targets, IP conditions, status metadata, and the last verified IP are stored in the browser's local extension storage.</p><p>The extension does not collect browsing history, page content, account information, analytics, or tracking identifiers.</p></section>
+      <section class="content-section"><h2>The necessary external request</h2><p>To evaluate IP-based rules, the extension requests plain text from <code>https://api.ipify.org</code> with a no-referrer policy and cache disabled for the network request. The lookup service receives the public IP of the network making the request and normal request metadata. Kill Switch does not send your configured domains, page URLs, or rule list to that service.</p><p>If a lookup fails, the extension may use the last verified IP stored locally. If no verified IP is available, configured targets remain blocked until an IP can be checked.</p></section>
+      <section class="content-section"><h2>Permissions</h2><dl class="permission-list"><div><dt>Storage</dt><dd>Stores rules, the last verified IP, and local status.</dd></div><div><dt>Tabs</dt><dd>Reads the active page URL locally and reloads the active tab after a manual refresh.</dd></div><div><dt>Declarative network rules</dt><dd>Applies blocking rules in the browser when a target is limited.</dd></div><div><dt>Website access</dt><dd>Allows rules to apply to configured HTTP and HTTPS destinations.</dd></div></dl></section>
+      <section class="content-section"><h2>Control and contact</h2><p>You can view, edit, or remove all rules from Manage rules. Uninstalling the extension removes its local storage. No account is required.</p><p>Questions can be reported through <a href="https://github.com/houtanrocky/killswitchextension/issues">GitHub support</a>. Do not include private URLs or IP addresses in public reports.</p></section>
+    </main>
+    <footer class="site-footer page-width"><span>Kill Switch Extension · Version 1.1.0</span><a href="./">Back to home</a></footer>
+  </body>
+</html>

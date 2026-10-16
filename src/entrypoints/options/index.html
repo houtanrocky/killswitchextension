@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kill Switch Rules</title>
+    <meta name="manifest.open_in_tab" content="false" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <div>
+          <p class="eyebrow">KILL SWITCH</p>
+          <h1>Rules</h1>
+          <p class="lede">Control website access using the public IP address your connection reports.</p>
+        </div>
+        <span id="rule-count" class="count-pill">0 rules</span>
+      </header>
+
+      <div id="message" class="notice" role="status" aria-live="polite"></div>
+
+      <section class="privacy-card" aria-label="Privacy note">
+        <span class="privacy-icon" aria-hidden="true">✓</span>
+        <div>
+          <strong>Your rules stay on this device</strong>
+          <p>Only the IP lookup request leaves the extension. Website targets and rules are never uploaded.</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="rules-heading">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ACCESS CONTROL</p>
+            <h2 id="rules-heading">Your rules</h2>
+          </div>
+          <button id="add" class="button button-secondary" type="button">Add rule</button>
+        </div>
+        <label class="search-field" for="rule-search">
+          <span>Search rules</span>
+          <input id="rule-search" type="search" placeholder="Search by domain, page, or IP" autocomplete="off" />
+        </label>
+        <div id="content" class="rules-list"></div>
+      </section>
+
+      <footer class="page-actions">
+        <button id="reset" class="button button-quiet" type="button">Discard changes</button>
+        <button id="save" class="button button-primary" type="button">Save changes</button>
+      </footer>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

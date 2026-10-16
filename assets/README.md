@@ -11,7 +11,7 @@ This folder contains HTML mockups for creating Chrome Web Store graphics.
 ## Assets Needed
 
 ### ✅ Store Icon
-- **File**: `img/icon-128x128-red.png` (already exists)
+- **File**: `public/img/icon-128x128-red.png` (already exists)
 - **Size**: 128x128 pixels
 - **Format**: PNG
 

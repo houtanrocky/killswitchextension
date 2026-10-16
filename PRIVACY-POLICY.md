@@ -1,84 +1,38 @@
-# Privacy Policy for Kill Switch Extension
+﻿# Privacy Policy for Kill Switch Extension
 
-**Last Updated:** 11/18.2025
+**Last Updated:** October 16, 2026
 
-## Introduction
+Kill Switch Extension processes the minimum information needed to evaluate your local website access rules. No account is required.
 
-Kill Switch Extension ("we", "our", or "the extension") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect information when you use our Chrome browser extension.
+## Information processed
 
-## Data Collection
+- **Public IP address:** The extension requests the current public IP from `https://api.ipify.org` and stores the last verified value locally for rule evaluation.
+- **Active tab URL:** The current HTTP or HTTPS tab URL is read locally to determine whether a configured rule matches. It is not sent to a server or stored as browsing history.
+- **Configured rules:** Domains, page targets, IP conditions, and allow or limit settings are stored in the browser's local extension storage.
 
-### Information We Collect
+The extension does not collect browsing history, page content, account information, analytics, or tracking identifiers.
 
-The Kill Switch Extension collects the following information:
+## External communication
 
-1. **Public IP Address**: The extension detects and stores your current public IP address to evaluate access rules. This is collected from third-party IP detection services (api.ipify.org, ifconfig.me, ip.seeip.org).
+The only external communication is a plain-text request to `https://api.ipify.org` with `referrerPolicy: no-referrer`. The lookup service can see the public IP of the network making the request and ordinary request metadata. Kill Switch does not send configured domains, page URLs, rule lists, analytics, or tracking identifiers to that service.
 
-2. **Website URLs**: The extension accesses the URLs of websites you visit to determine if they match your configured blocking rules. This information is used in real-time and is not stored as a browsing history.
+If a lookup fails, the extension may use the last verified IP stored locally. If no verified IP is available, configured targets remain blocked until an IP can be checked.
 
-3. **User-Configured Rules**: Any rules you create (domains, IP addresses, whitelist/blacklist settings) are stored locally on your device.
+## Permissions
 
-### How We Collect Information
+- `storage` stores rules, the last verified IP, and local status metadata.
+- `tabs` reads the active page URL locally and supports manual reload after a refresh request.
+- `declarativeNetRequest` applies browser-level blocking rules to limited targets.
+- `<all_urls>` allows configured rules to apply to HTTP and HTTPS destinations.
 
-- **IP Address**: Automatically detected from public IP lookup services when the extension is active.
-- **URLs**: Accessed in real-time when you navigate to websites to evaluate against your rules.
-- **Rules**: Stored locally when you create, modify, or delete rules through the extension interface.
+## Your controls
 
-## Data Storage
+You can view, search, edit, and remove every rule from Manage rules. Uninstalling the extension removes its local storage. Google Analytics is disabled and no remote fonts are loaded.
 
-**All data is stored locally on your device** using Chrome's local storage API. No data is transmitted to our servers or any third-party servers except for:
+## Children's privacy
 
-- IP detection services (api.ipify.org, ifconfig.me, ip.seeip.org) which receive your public IP address - the same information any website receives when you visit it.
+The extension is not intended for children under 13. We do not knowingly collect information from children under 13.
 
-## Data Usage
+## Contact and changes
 
-We use the collected information solely for the following purposes:
-
-1. **Evaluating Access Rules**: To determine whether to block or allow websites based on your current IP address and configured rules.
-
-2. **Rule Management**: To store and manage your whitelist/blacklist rules locally on your device.
-
-3. **Extension Functionality**: To provide the core features of the extension, including automatic blocking/allowing of websites based on IP address matching.
-
-## Data Sharing
-
-**We do not sell, trade, or transfer your information to third parties.** 
-
-The only external communication is:
-- Requests to IP detection services to determine your current public IP address. These services receive only your public IP (which they would receive from any website visit) and do not receive any other personal information or browsing data.
-
-## Data Security
-
-All data is stored locally on your device using Chrome's secure local storage. We do not maintain any external servers or databases that store your information.
-
-## Your Rights
-
-You have full control over your data:
-
-- **View Your Data**: All stored rules and IP information can be viewed in the extension's options page.
-- **Delete Your Data**: You can delete individual rules or clear all data through the extension interface. Uninstalling the extension will remove all locally stored data.
-- **No Account Required**: The extension does not require account creation, so there is no account data to manage.
-
-## Children's Privacy
-
-Our extension is not intended for users under the age of 13. We do not knowingly collect information from children under 13.
-
-## Changes to This Privacy Policy
-
-We may update this Privacy Policy from time to time. We will notify you of any changes by updating the "Last Updated" date at the top of this policy. You are advised to review this Privacy Policy periodically for any changes.
-
-## Contact Us
-
-If you have any questions about this Privacy Policy, please contact us at: houtan.rocky@gmail.com
-
-## Compliance
-
-This extension complies with:
-- Chrome Web Store Developer Program Policies
-- General Data Protection Regulation (GDPR) principles (data minimization, local storage only)
-- No data collection beyond what is necessary for the extension's single purpose
-
----
-
-**Summary**: Kill Switch Extension stores all data locally on your device. The only external communication is to IP detection services to determine your public IP address. No browsing history, personal information, or rule data is transmitted to external servers.
-
+Questions can be sent to [houtan.rocky@gmail.com](mailto:houtan.rocky@gmail.com) or reported through the [GitHub support page](https://houtanrocky.github.io/killswitchextension/support.html). We may update this policy by changing the date above.
