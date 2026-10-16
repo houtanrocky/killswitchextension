@@ -41,8 +41,19 @@
   ],
   "assets": {
     "storeIcon": "../img/kill-switch-icon.png",
-    "screenshots": "../../assets/screenshot-*.html",
-    "smallPromoTile": "../../assets/promo-small.html",
-    "marqueePromoTile": "../../assets/promo-marquee.html"
+    "screenshots": [
+      "../../assets/store-screenshot-1-popup.png",
+      "../../assets/store-screenshot-2-options.png",
+      "../../assets/store-screenshot-3-features.png"
+    ],
+    "smallPromoTile": "../../assets/store-promo-small.png",
+    "marqueePromoTile": "../../assets/store-promo-marquee.png",
+    "sourceMockups": [
+      "../../assets/screenshot-1-popup.html",
+      "../../assets/screenshot-2-options.html",
+      "../../assets/screenshot-3-features.html",
+      "../../assets/promo-small.html",
+      "../../assets/promo-marquee.html"
+    ]
   }
 }
