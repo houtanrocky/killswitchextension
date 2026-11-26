@@ -4,7 +4,9 @@ The companion is a standalone desktop rule manager. Its local rule file is store
 
 The app shows its branded icon in the Windows taskbar while the window is open and in the notification area while it is running. Double-click the notification-area icon to reopen the window, or right-click it to open or exit.
 
-Download the self-contained Windows x64 executable from the [latest GitHub release](https://github.com/houtanrocky/killswitchextension/releases/latest).
+Download the install package from the [latest GitHub release](https://github.com/houtanrocky/killswitchextension/releases/latest). Extract it and run `Install-KillSwitch.ps1` from an elevated PowerShell session. Setup creates a Start menu shortcut and, by default, a highest-privilege sign-in task so the app opens visibly and reports its protection state at login. Run `Install-KillSwitch.ps1 -NoStartup` to skip automatic launch. Use Add or Remove Programs to uninstall.
+
+Startup brings up the app and makes its current state visible; it does not automatically enable the Windows egress gate. Users must configure and sync a trusted HTTPS gateway and enable the gate in the app. The app displays **Not active** until the gate is actually on.
 
 ## Current implementation
 
