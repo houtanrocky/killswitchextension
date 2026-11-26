@@ -92,7 +92,7 @@ public partial class MainWindow : Window
 			if (hadFirewallRecovery)
 				GatewayStatusText.Text = "Recovered and restored a previous Windows firewall session.";
 			StartProxyButton.IsEnabled = true;
-			ProtectionStatus.Text = "Not active — Windows egress gate is stopped";
+			ProtectionStatus.Text = "Protection is off";
 			ProtectionStatus.Foreground = System.Windows.Media.Brushes.Orange;
 		}
 		catch (Exception error)
@@ -393,16 +393,22 @@ public partial class MainWindow : Window
 			_proxyController.Enable(_requestProxy.Port);
 			StartProxyButton.IsEnabled = false;
 			StopProxyButton.IsEnabled = true;
-			ProtectionStatus.Text = "Windows firewall gate active — gateway is the only remote route";
+			ProtectionStatus.Text = "Protection is on";
 			ProtectionStatus.Foreground = System.Windows.Media.Brushes.LightGreen;
 			GatewayStatusText.Text = "Local inspection CA trusted for this Windows user. Apps with certificate pinning may reject inspected connections.";
 		}
 		catch (Exception error)
 		{
 			if (await StopProxyAsync())
-				GatewayStatusText.Text = $"Could not start local routing: {error.Message}";
+			{
+				GatewayStatusText.Text = $"Protection could not start: {error.Message}";
+				MessageBox.Show(this, $"Protection could not start.\n\n{error.Message}", "Kill Switch", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 			else
+			{
 				GatewayStatusText.Text += $" Startup error: {error.Message}";
+				MessageBox.Show(this, $"Protection could not start, and Windows could not fully restore its previous network settings.\n\n{error.Message}", "Kill Switch", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
 		}
 		finally
 		{
@@ -467,7 +473,7 @@ public partial class MainWindow : Window
 			{
 				StartProxyButton.IsEnabled = true;
 				StopProxyButton.IsEnabled = false;
-				ProtectionStatus.Text = "Not active — Windows egress gate is stopped";
+				ProtectionStatus.Text = "Protection is off";
 				ProtectionStatus.Foreground = System.Windows.Media.Brushes.Orange;
 			}
 			return true;

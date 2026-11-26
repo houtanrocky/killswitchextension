@@ -73,15 +73,15 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0,0,20,0">
                     <TextBlock Text="NETWORK FILTER" FontSize="11" FontWeight="Bold" Foreground="#9BA9BC" />
-                    <TextBlock x:Name="ProtectionStatus" Text="Not active — Windows egress gate is stopped" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#FFB45D" />
-                    <TextBlock Text="The egress gate blocks direct outbound traffic and allows Kill Switch to reach its gateway." FontSize="12" TextWrapping="Wrap" Foreground="#AAB4C3" Margin="0,4,0,0" />
+                    <TextBlock x:Name="ProtectionStatus" Text="Protection is off" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,5,0,0" Foreground="#FFB45D" />
+                    <TextBlock Text="When on, Kill Switch routes compatible apps through its service and blocks other outbound connections." FontSize="12" TextWrapping="Wrap" Foreground="#AAB4C3" Margin="0,4,0,0" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <TextBlock Text="CURRENT PUBLIC IP" FontSize="10" FontWeight="Bold" Foreground="#9BA9BC" HorizontalAlignment="Right" />
                     <TextBlock x:Name="CurrentIpText" Text="Not checked" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" HorizontalAlignment="Right" />
                     <WrapPanel HorizontalAlignment="Right" Margin="0,9,0,0">
-                        <Button x:Name="StartProxyButton" Content="Enable Windows egress gate" MinWidth="190" Click="StartProxy_Click" />
-                        <Button x:Name="StopProxyButton" Content="Disable egress gate" MinWidth="150" Margin="0" IsEnabled="False" Click="StopProxy_Click" />
+                        <Button x:Name="StartProxyButton" Content="Start protection" MinWidth="150" Click="StartProxy_Click" />
+                        <Button x:Name="StopProxyButton" Content="Stop protection" MinWidth="130" Margin="0" IsEnabled="False" Click="StopProxy_Click" />
                     </WrapPanel>
                 </StackPanel>
             </Grid>
@@ -117,7 +117,7 @@
                   CanUserReorderColumns="False" CanUserResizeRows="False" MinHeight="160">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="SITE OR PAGE TO BLOCK" Binding="{Binding Target, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
-                <DataGridTextColumn Header="ALLOWED IP ADDRESSES" Binding="{Binding IpConditions, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
+                <DataGridTextColumn Header="IP RULE" Binding="{Binding IpConditions, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
                 <DataGridTextColumn Header="CURRENT IP STATUS" Binding="{Binding CurrentStatus}" IsReadOnly="True" Width="*" />
             </DataGrid.Columns>
         </DataGrid>

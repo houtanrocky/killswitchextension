@@ -21,8 +21,15 @@ public partial class AddRuleWindow : Window
 	private void Add_Click(object sender, RoutedEventArgs e)
 	{
 		var target = TargetInput.Text.Trim();
-		var conditions = IpConditionsInput.Text.Trim();
-		if (string.IsNullOrWhiteSpace(conditions)) conditions = _currentIp;
+		var addresses = IpConditionsInput.Text.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+		if (addresses.Length == 0) addresses = [_currentIp];
+		if (addresses.Any(address => address.StartsWith('!')))
+		{
+			ErrorText.Text = "Enter plain IP addresses here. Choose Allow or Block above to set what happens.";
+			return;
+		}
+		var blockListedAddresses = BlockIpsRadio.IsChecked == true;
+		var conditions = string.Join(",", addresses.Select(address => blockListedAddresses ? "!" + address : address));
 		var rule = new AccessRule { Target = target, IpConditions = conditions };
 		var error = AccessRule.Validate(rule);
 		if (error is not null)

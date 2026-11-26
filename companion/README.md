@@ -4,11 +4,11 @@ The companion is a standalone desktop rule manager. Its local rule file is store
 
 The app shows its branded icon in the Windows taskbar while the window is open and in the notification area while it is running. Closing the window hides it to the notification area, where it keeps running. Double-click the notification-area icon to reopen the window, or right-click it and choose **Exit** to stop the app. If protection is active, Exit first restores the prior firewall and proxy settings.
 
-Choose **Add site to protect** to create a rule without editing the table. The Companion fills in the current public IP automatically and saves the rule. Advanced settings let you enter a custom list of allowed addresses.
+Choose **Add site to protect** to create a rule without editing the table. Choose whether to allow or block the listed IPs; the Companion fills in your current public IP automatically and saves the rule. Advanced settings let you enter a custom list of IP addresses.
 
 Download the install package from the [latest GitHub release](https://github.com/houtanrocky/killswitchextension/releases/latest). Extract it and run `Install-KillSwitch.ps1` from an elevated PowerShell session. Setup creates a Start menu shortcut and, by default, a per-user Windows sign-in entry so the app opens visibly and places its icon in the notification area. The **Open Kill Switch when I sign in** setting in the app controls automatic launch. Run `Install-KillSwitch.ps1 -NoStartup` to skip it. Use Add or Remove Programs to uninstall.
 
-Startup brings up the app and makes its current state visible; it does not automatically enable the Windows egress gate. Users click **Enable Windows egress gate** and approve a plain-language notice. The Companion discovers the managed HTTPS service and creates a device key automatically; no gateway address, token, or account is needed. The gate remains off if the managed service has not been deployed.
+Startup brings up the app and makes its current state visible; protection starts only when the user clicks **Start protection** and approves the plain-language notice. The Companion discovers the managed HTTPS service and creates a device key automatically; no gateway address, token, or account is needed. If starting protection fails, the app shows the specific error in a dialog.
 
 ## Current implementation
 
