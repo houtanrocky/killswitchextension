@@ -47,21 +47,20 @@ $shortcut.IconLocation = "$($shortcut.TargetPath),0"
 $shortcut.Description = 'Kill Switch network access protection'
 $shortcut.Save()
 
-if ($NoStartup) {
-	Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
-} else {
+Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
+if (-not $NoStartup) {
 	$userId = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 	$action = New-ScheduledTaskAction -Execute (Join-Path $installDirectory $executableName)
 	$trigger = New-ScheduledTaskTrigger -AtLogOn -User $userId
 	$taskPrincipal = New-ScheduledTaskPrincipal -UserId $userId -LogonType Interactive -RunLevel Highest
 	$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit ([TimeSpan]::Zero) -Priority 4
-	Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $taskPrincipal -Settings $settings -Description 'Shows Kill Switch protection status at sign-in.' -Force | Out-Null
+	Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Principal $taskPrincipal -Settings $settings -Description 'Shows Kill Switch protection state at sign-in.' -Force | Out-Null
 }
 
 $uninstallCommand = "powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"$installDirectory\Uninstall-KillSwitch.ps1`""
 New-Item -Path $uninstallKey -Force | Out-Null
 New-ItemProperty -Path $uninstallKey -Name DisplayName -Value 'Kill Switch Companion' -PropertyType String -Force | Out-Null
-New-ItemProperty -Path $uninstallKey -Name DisplayVersion -Value '1.1.1' -PropertyType String -Force | Out-Null
+New-ItemProperty -Path $uninstallKey -Name DisplayVersion -Value '1.1.4' -PropertyType String -Force | Out-Null
 New-ItemProperty -Path $uninstallKey -Name Publisher -Value 'Kill Switch' -PropertyType String -Force | Out-Null
 New-ItemProperty -Path $uninstallKey -Name InstallLocation -Value $installDirectory -PropertyType String -Force | Out-Null
 New-ItemProperty -Path $uninstallKey -Name UninstallString -Value $uninstallCommand -PropertyType String -Force | Out-Null
@@ -73,4 +72,4 @@ Write-Host 'Kill Switch Companion is installed.' -ForegroundColor Green
 if (-not $NoStartup) {
 	Write-Host 'It will open visibly at sign-in and show whether protection is active.' -ForegroundColor Green
 }
-Write-Host 'The startup task does not enable the egress gate by itself. Configure a trusted HTTPS gateway and turn on the gate in the app.' -ForegroundColor Yellow
+Write-Host 'The sign-in task opens the app but does not enable the egress gate. Turn on protection in the app when you are ready.' -ForegroundColor Yellow

@@ -17,7 +17,7 @@ export default defineConfig({
 				},
 			},
 		},
-		permissions: ['storage', 'declarativeNetRequest', 'tabs'],
+		permissions: ['storage', 'declarativeNetRequest', 'tabs', 'alarms'],
 		host_permissions: ['<all_urls>'],
 		icons: {
 			48: '/img/icon-48x48-red.png',

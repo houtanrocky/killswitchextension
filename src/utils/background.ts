@@ -10,6 +10,33 @@ import {
 import { updateIconForActivePage } from "./page-status";
 
 let currentRefreshPromise: Promise<void> | null = null;
+const IP_REFRESH_ALARM = "kill-switch-ip-refresh";
+const IP_REFRESH_INTERVAL_MINUTES = 0.5;
+const IP_REFRESH_INTERVAL_MS = 5_000;
+let ipRefreshTimeout: ReturnType<typeof setTimeout> | null = null;
+
+function scheduleIpRefresh(): void {
+	browser.alarms.create(IP_REFRESH_ALARM, {
+		periodInMinutes: IP_REFRESH_INTERVAL_MINUTES
+	});
+	if (ipRefreshTimeout !== null) {
+		clearTimeout(ipRefreshTimeout);
+	}
+	ipRefreshTimeout = setTimeout(() => {
+		ipRefreshTimeout = null;
+		void refreshRules("periodic-ip-check").finally(scheduleIpRefreshTimeout);
+	}, IP_REFRESH_INTERVAL_MS);
+}
+
+function scheduleIpRefreshTimeout(): void {
+	if (ipRefreshTimeout !== null) {
+		clearTimeout(ipRefreshTimeout);
+	}
+	ipRefreshTimeout = setTimeout(() => {
+		ipRefreshTimeout = null;
+		void refreshRules("periodic-ip-check").finally(scheduleIpRefreshTimeout);
+	}, IP_REFRESH_INTERVAL_MS);
+}
 
 interface StoredState {
 	urls?: unknown;
@@ -161,11 +188,19 @@ export async function refreshRules(reason = "manual"): Promise<void> {
 
 export function registerBackgroundListeners(): void {
 	browser.runtime.onInstalled.addListener(() => {
+		scheduleIpRefresh();
 		void refreshRules("installed");
 	});
 	browser.runtime.onStartup.addListener(() => {
+		scheduleIpRefresh();
 		void refreshRules("startup");
 	});
+	browser.alarms.onAlarm.addListener((alarm) => {
+		if (alarm.name === IP_REFRESH_ALARM) {
+			void refreshRules("periodic-ip-check");
+		}
+	});
+	scheduleIpRefresh();
 	browser.storage.onChanged.addListener((changes, areaName) => {
 		if (areaName === "local" && (changes.urls || changes.allowed_ips)) {
 			void refreshRules("storage-change");

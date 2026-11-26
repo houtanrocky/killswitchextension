@@ -20,7 +20,7 @@ If a lookup fails, configured targets remain blocked until a fresh IP can be che
 
 ## Optional Windows Companion and gateway
 
-The separate Windows Companion can route browser traffic through an HTTPS gateway configured by the user. The gateway receives requested URLs and request data needed to fetch pages, then evaluates matching rules using the source IP it observes. Requests to URLs with no matching rule are allowed through. The gateway operator may be able to access this traffic, so use a gateway you trust. Requests already in flight may complete during an IP change.
+The separate Windows Companion can route compatible app traffic through its managed HTTPS service. Before enabling protection, the Companion explains that destination URLs, request headers and bodies, and the public IP observed by the service are processed to evaluate rules and forward allowed requests. The service is hosted on Cloudflare; the service operator and Cloudflare may process connection and request data. The Worker is configured not to intentionally log destination URLs, headers, bodies, or client IPs, but this is not a guarantee about platform-level processing. Requests already in flight may complete during an IP change. Users can decline the prompt; the Windows network gate will then remain off. The Companion stores its random device key locally using Windows DPAPI.
 
 ## Permissions
 

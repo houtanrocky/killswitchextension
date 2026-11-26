@@ -32,6 +32,21 @@ public sealed class GatewayClient : IRequestForwarder, IDisposable
 		_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", bearerToken);
 	}
 
+	public static async Task<string> RegisterDeviceAsync(Uri endpoint, CancellationToken cancellationToken = default)
+	{
+		if (endpoint.Scheme != Uri.UriSchemeHttps)
+			throw new ArgumentException("The gateway endpoint must use HTTPS.", nameof(endpoint));
+		using var client = new HttpClient { BaseAddress = new Uri(endpoint.AbsoluteUri.TrimEnd('/') + "/"), Timeout = TimeSpan.FromSeconds(20) };
+		using var request = new HttpRequestMessage(HttpMethod.Post, "v1/register") { Content = JsonContent.Create(new { }) };
+		request.Headers.ConnectionClose = true;
+		using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+		response.EnsureSuccessStatusCode();
+		var result = await response.Content.ReadFromJsonAsync<RegistrationResponse>(JsonOptions, cancellationToken);
+		if (result?.Token is not { Length: 64 } token || !token.All(Uri.IsHexDigit))
+			throw new InvalidDataException("The managed gateway returned an invalid device key.");
+		return token.ToLowerInvariant();
+	}
+
 	public async Task SyncPolicyAsync(IEnumerable<AccessRule> rules, CancellationToken cancellationToken = default)
 	{
 		var policy = rules.Select(rule => new GatewayRule(rule.Target, rule.IpConditions)).ToArray();
@@ -43,6 +58,8 @@ public sealed class GatewayClient : IRequestForwarder, IDisposable
 		using var response = await _httpClient.SendAsync(request, cancellationToken);
 		response.EnsureSuccessStatusCode();
 	}
+
+	private sealed record RegistrationResponse(string Token);
 
 	public async Task<string> GetObservedPublicIpAsync(CancellationToken cancellationToken = default)
 	{

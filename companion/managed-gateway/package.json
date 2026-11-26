@@ -1,0 +1,14 @@
+{
+  "name": "killswitch-managed-gateway",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "types": "wrangler types",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "dry-run": "wrangler deploy --dry-run"
+  },
+  "devDependencies": {
+    "wrangler": "4.168.0"
+  }
+}

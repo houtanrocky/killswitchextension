@@ -35,6 +35,7 @@ public partial class MainWindow : Window
 	private bool _exitRequestedFromTray;
 	private bool _startingProxy;
 	private bool _stoppingProxy;
+	private bool _loadingStartupSetting;
 
 	public MainWindow()
 	{
@@ -42,41 +43,21 @@ public partial class MainWindow : Window
 		RulesGrid.ItemsSource = _rules;
 		_rulesView = CollectionViewSource.GetDefaultView(_rules);
 		_rulesView.Filter = FilterRule;
-		var hadFirewallRecovery = WindowsFirewallGate.HasRecoveryState;
-		try
-		{
-			WindowsFirewallGate.RestoreAsync().GetAwaiter().GetResult();
-			if (hadFirewallRecovery)
-				GatewayStatusText.Text = "Recovered and restored a previous Windows firewall session.";
-		}
-		catch (Exception error)
-		{
-			ProtectionStatus.Text = "Firewall recovery required — outbound traffic may remain restricted";
-			GatewayStatusText.Text = $"Could not restore the previous firewall settings. Run as administrator and retry: {error.Message}";
-			StartProxyButton.IsEnabled = false;
-			StopProxyButton.IsEnabled = true;
-		}
 		try
 		{
 			_gatewaySettings = _gatewaySettingsStore.Load();
 			if (_gatewaySettings is not null)
 			{
-				GatewayEndpointInput.Text = _gatewaySettings.Endpoint.AbsoluteUri;
-				GatewayStatusText.Text = "Gateway credentials are stored for this Windows user.";
+				GatewayStatusText.Text = "A connection is saved for this Windows user.";
 			}
 		}
 		catch (Exception error)
 		{
-			GatewayStatusText.Text = "Saved gateway credentials could not be opened. Enter them again.";
+			GatewayStatusText.Text = "The saved connection could not be opened. It will be set up again when needed.";
 			System.Diagnostics.Debug.WriteLine(error);
 		}
 		_ipRefreshTimer.Tick += async (_, _) => await RefreshCurrentIpAsync();
-		Loaded += async (_, _) =>
-		{
-			await LoadRulesAsync();
-			await RefreshCurrentIpAsync();
-			_ipRefreshTimer.Start();
-		};
+		Loaded += async (_, _) => await InitializeAsync();
 		Closing += (_, args) =>
 		{
 			if (_allowWindowClose) return;
@@ -97,6 +78,73 @@ public partial class MainWindow : Window
 			_ = StopBeforeCloseAsync();
 		};
 		Closed += (_, _) => _ipRefreshTimer.Stop();
+	}
+
+	private async Task InitializeAsync()
+	{
+		StartProxyButton.IsEnabled = false;
+		StopProxyButton.IsEnabled = false;
+		ProtectionStatus.Text = "Checking Windows firewall status…";
+		var hadFirewallRecovery = WindowsFirewallGate.HasRecoveryState;
+		try
+		{
+			await WindowsFirewallGate.RestoreAsync();
+			if (hadFirewallRecovery)
+				GatewayStatusText.Text = "Recovered and restored a previous Windows firewall session.";
+			StartProxyButton.IsEnabled = true;
+			ProtectionStatus.Text = "Not active — Windows egress gate is stopped";
+			ProtectionStatus.Foreground = System.Windows.Media.Brushes.Orange;
+		}
+		catch (Exception error)
+		{
+			ProtectionStatus.Text = "Firewall recovery required — outbound traffic may remain restricted";
+			GatewayStatusText.Text = $"Could not restore the previous firewall settings. Retry as administrator: {error.Message}";
+			StopProxyButton.IsEnabled = true;
+		}
+
+		_loadingStartupSetting = true;
+		LaunchAtStartupCheck.IsEnabled = false;
+		try
+		{
+			LaunchAtStartupCheck.IsChecked = await StartupRegistration.IsEnabledAsync();
+		}
+		catch (Exception error)
+		{
+			GatewayStatusText.Text = $"Could not read the sign-in setting: {error.Message}";
+		}
+		finally
+		{
+			_loadingStartupSetting = false;
+			LaunchAtStartupCheck.IsEnabled = true;
+		}
+
+		await LoadRulesAsync();
+		await RefreshCurrentIpAsync();
+		_ipRefreshTimer.Start();
+	}
+
+	private async void LaunchAtStartup_Changed(object sender, RoutedEventArgs e)
+	{
+		if (_loadingStartupSetting || LaunchAtStartupCheck.IsChecked is not bool enabled) return;
+		LaunchAtStartupCheck.IsEnabled = false;
+		try
+		{
+			await StartupRegistration.SetEnabledAsync(enabled);
+			GatewayStatusText.Text = enabled
+				? "Kill Switch will open when this Windows user signs in."
+				: "Automatic sign-in launch is disabled.";
+		}
+		catch (Exception error)
+		{
+			_loadingStartupSetting = true;
+			LaunchAtStartupCheck.IsChecked = !enabled;
+			_loadingStartupSetting = false;
+			GatewayStatusText.Text = $"Could not update the sign-in setting: {error.Message}";
+		}
+		finally
+		{
+			LaunchAtStartupCheck.IsEnabled = true;
+		}
 	}
 
 	public void ExitFromTray()
@@ -244,45 +292,9 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private async void SyncGateway_Click(object sender, RoutedEventArgs e)
-	{
-		if (_requestProxy is not null)
-		{
-			GatewayStatusText.Text = "Stop routing before changing the gateway endpoint or credentials.";
-			return;
-		}
-		RulesGrid.CommitEdit();
-		RulesGrid.CommitEdit();
-		var endpointText = GatewayEndpointInput.Text.Trim();
-		if (!Uri.TryCreate(endpointText, UriKind.Absolute, out var endpoint) || endpoint.Scheme != Uri.UriSchemeHttps)
-		{
-			GatewayStatusText.Text = "Enter a valid HTTPS gateway URL.";
-			return;
-		}
-		if (string.IsNullOrWhiteSpace(GatewayTokenInput.Password) && _gatewaySettings is null)
-		{
-			GatewayStatusText.Text = "Enter the gateway access token.";
-			return;
-		}
-		try
-		{
-			_gatewaySettings = new GatewaySettings(endpoint, string.IsNullOrWhiteSpace(GatewayTokenInput.Password)
-				? _gatewaySettings!.BearerToken
-				: GatewayTokenInput.Password);
-			_gatewaySettingsStore.Save(_gatewaySettings);
-			GatewayTokenInput.Clear();
-			await SyncPolicyIfConfiguredAsync();
-		}
-		catch (Exception error)
-		{
-			GatewayStatusText.Text = $"Gateway sync failed: {error.Message}";
-		}
-	}
-
 	private async Task SyncPolicyIfConfiguredAsync()
 	{
 		if (_gatewaySettings is null) return;
-		SyncGatewayButton.IsEnabled = false;
 		try
 		{
 			if (_gatewayClient is not null)
@@ -303,28 +315,27 @@ public partial class MainWindow : Window
 				? $"Gateway sync failed; local rules remain saved. {error.Message}"
 				: $"Gateway sync failed; local proxy now blocks requests until policy sync succeeds. {error.Message}";
 		}
-		finally
-		{
-			SyncGatewayButton.IsEnabled = true;
-		}
 	}
 
 	private async void RefreshIp_Click(object sender, RoutedEventArgs e) => await RefreshCurrentIpAsync();
 
 	private async void StartProxy_Click(object sender, RoutedEventArgs e)
 	{
-		if (_gatewaySettings is null)
-		{
-			GatewayStatusText.Text = "Configure and sync an HTTPS gateway before starting local routing.";
-			return;
-		}
 		if (MessageBox.Show(this,
-			"Windows Firewall will block outbound traffic from all applications except Kill Switch connections to this gateway while routing is active. Apps honoring the Windows proxy can use the gateway; direct connections, Internet Connection Sharing egress, and unrelated network services will be blocked. Administrator approval is required. Continue?",
+			"To check each request against your rules, Kill Switch sends the destination URL, request headers and data, and the public IP address seen by its connection service. The service forwards allowed requests. Its operator and hosting provider may process this information. Windows Firewall will also block other outbound traffic while protection is on; apps must honor the Windows proxy. Administrator approval is required. Continue?",
 			"Enable Windows egress gate", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes) return;
 		_startingProxy = true;
 		StartProxyButton.IsEnabled = false;
 		try
 		{
+			if (_gatewaySettings is null)
+			{
+				GatewayStatusText.Text = "Connecting to the managed service…";
+				var endpoint = await ManagedGatewayDiscovery.GetEndpointAsync();
+				var token = await GatewayClient.RegisterDeviceAsync(endpoint);
+				_gatewaySettings = new GatewaySettings(endpoint, token);
+				_gatewaySettingsStore.Save(_gatewaySettings);
+			}
 			RulesGrid.CommitEdit();
 			RulesGrid.CommitEdit();
 			for (var index = 0; index < _rules.Count; index++)

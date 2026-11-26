@@ -32,14 +32,14 @@ public partial class App : System.Windows.Application
 		_instanceMutex = mutex;
 		base.OnStartup(e);
 		ShutdownMode = ShutdownMode.OnExplicitShutdown;
+		CreateTrayIcon();
 		var window = new MainWindow();
 		MainWindow = window;
-		CreateTrayIcon(window);
 		window.Closed += (_, _) => Shutdown();
 		window.Show();
 	}
 
-	private void CreateTrayIcon(Window window)
+	private void CreateTrayIcon()
 	{
 		var executable = Environment.ProcessPath;
 		var icon = executable is not null
@@ -52,15 +52,22 @@ public partial class App : System.Windows.Application
 			Visible = true
 		};
 		var menu = new Forms.ContextMenuStrip();
-		menu.Items.Add("Open Kill Switch", null, (_, _) => ShowMainWindow(window));
+		menu.Items.Add("Open Kill Switch", null, (_, _) => ShowMainWindow());
 		menu.Items.Add(new Forms.ToolStripSeparator());
-		menu.Items.Add("Exit", null, (_, _) => ((MainWindow)window).ExitFromTray());
+		menu.Items.Add("Exit", null, (_, _) =>
+		{
+			if (MainWindow is MainWindow window)
+				window.ExitFromTray();
+			else
+				Shutdown();
+		});
 		_trayIcon.ContextMenuStrip = menu;
-		_trayIcon.DoubleClick += (_, _) => ShowMainWindow(window);
+		_trayIcon.DoubleClick += (_, _) => ShowMainWindow();
 	}
 
-	private static void ShowMainWindow(Window window)
+	private void ShowMainWindow()
 	{
+		if (MainWindow is not Window window) return;
 		if (window.WindowState == WindowState.Minimized)
 			window.WindowState = WindowState.Normal;
 		window.Show();
