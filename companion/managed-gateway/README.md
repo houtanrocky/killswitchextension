@@ -2,14 +2,17 @@
 
 This Worker is the managed HTTPS relay used by the standalone Windows Companion. Each installation receives a random bearer key; its policy is isolated in a Durable Object keyed by a hash of that key. The key is stored by the Companion using Windows DPAPI. The service has no account, email, or recovery flow.
 
-## Deploy into a Cloudflare account
+## Connect this repository in Cloudflare
 
-1. Install a current Node.js LTS release.
-2. From this directory run `npm install`, then `npm run dry-run`.
-3. Run `npx wrangler login` and `npm run deploy`.
-4. Wrangler prints the Worker URL, normally `https://killswitch-managed-gateway.<your-account-subdomain>.workers.dev`.
-5. Set `endpoint` in `../../docs/managed-gateway.json` to that URL and change `enabled` to `true`.
-6. Publish the repository's GitHub Pages site so the Companion can discover the setting at `https://houtanrocky.github.io/killswitchextension/managed-gateway.json`.
+1. In Cloudflare, open **Workers & Pages** and choose **Create application** / **Connect to Git**. Install or authorize the Cloudflare GitHub App for `houtanrocky/killswitchextension`.
+2. Select the `master` branch.
+3. Set **Root directory** to `companion/managed-gateway`.
+4. Leave **Build command** blank. Set **Deploy command** to `npm run deploy`. Leave preview deployments off unless you explicitly want non-production branches to deploy.
+5. Keep the Worker name `killswitch-managed-gateway`, and ensure a `workers.dev` subdomain is enabled for the account. Cloudflare should then deploy the Worker and both SQLite Durable Object classes from `wrangler.jsonc`.
+
+The first deployment prints the Worker URL, normally `https://killswitch-managed-gateway.<your-account-subdomain>.workers.dev`. The account subdomain is assigned by Cloudflare, so it cannot be safely guessed in this repository. Copy the exact URL into `endpoint` in `../../docs/managed-gateway.json` and change `enabled` to `true`, then commit and push that one config change. GitHub Pages will publish the discovery config at `https://houtanrocky.github.io/killswitchextension/managed-gateway.json`; the Companion will then connect automatically. Keep the Worker public and do not put it behind Cloudflare Access, because the Companion must reach it directly.
+
+If deploying locally instead, from this directory run `npm install`, `npm run dry-run`, `npx wrangler login`, then `npm run deploy`.
 
 Never put device keys or other secrets in the discovery file. It is public configuration.
 
