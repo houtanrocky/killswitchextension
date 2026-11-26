@@ -352,6 +352,8 @@ public partial class MainWindow : Window
 			"Enable Windows egress gate", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.No) != MessageBoxResult.Yes) return;
 		_startingProxy = true;
 		StartProxyButton.IsEnabled = false;
+		ProtectionStatus.Text = "Starting protection…";
+		ProtectionStatus.Foreground = System.Windows.Media.Brushes.Orange;
 		try
 		{
 			if (_gatewaySettings is null)
@@ -362,6 +364,7 @@ public partial class MainWindow : Window
 				_gatewaySettings = new GatewaySettings(endpoint, token);
 				_gatewaySettingsStore.Save(_gatewaySettings);
 			}
+			GatewayStatusText.Text = "Checking your saved rules…";
 			RulesGrid.CommitEdit();
 			RulesGrid.CommitEdit();
 			for (var index = 0; index < _rules.Count; index++)
@@ -372,9 +375,12 @@ public partial class MainWindow : Window
 					throw new InvalidDataException($"Duplicate target: {_rules[index].Target}");
 			}
 			await _repository.SaveAsync(_rules);
-			var gatewayAddresses = await Dns.GetHostAddressesAsync(_gatewaySettings.Endpoint.DnsSafeHost);
+			GatewayStatusText.Text = "Finding the managed service…";
+			var gatewayAddresses = await Dns.GetHostAddressesAsync(_gatewaySettings.Endpoint.DnsSafeHost).WaitAsync(TimeSpan.FromSeconds(15));
 			_gatewayClient = new GatewayClient(_gatewaySettings.Endpoint, _gatewaySettings.BearerToken, resolvedGatewayAddresses: gatewayAddresses);
+			GatewayStatusText.Text = "Sending your rules securely…";
 			await _gatewayClient.SyncPolicyAsync(_rules);
+			GatewayStatusText.Text = "Preparing secure website inspection…";
 			_certificateAuthority = TlsCertificateAuthority.Create();
 			_proxyController.RecordInspectionCertificate(_certificateAuthority.Certificate);
 			using (var store = new X509Store(StoreName.Root, StoreLocation.CurrentUser))
@@ -384,8 +390,21 @@ public partial class MainWindow : Window
 				store.Add(trustedRoot);
 			}
 			_requestProxy = new LocalRequestProxy(_gatewayClient, _certificateAuthority);
+			GatewayStatusText.Text = "Starting the local request filter…";
 			await _requestProxy.StartAsync();
-			await WindowsFirewallGate.EnableAsync(Environment.ProcessPath ?? "", _gatewaySettings.Endpoint.Port, gatewayAddresses);
+			GatewayStatusText.Text = "Applying Windows Firewall rules… this can take up to one minute.";
+			using (var firewallTimeout = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
+			{
+				try
+				{
+					await WindowsFirewallGate.EnableAsync(Environment.ProcessPath ?? "", _gatewaySettings.Endpoint.Port, gatewayAddresses, firewallTimeout.Token);
+				}
+				catch (OperationCanceledException) when (firewallTimeout.IsCancellationRequested)
+				{
+					throw new TimeoutException("Windows Firewall took too long to apply the rules. Kill Switch stopped the operation and tried to restore the previous settings.");
+				}
+			}
+			GatewayStatusText.Text = "Checking the managed connection…";
 			await _gatewayClient.SyncPolicyAsync(_rules);
 			_currentIp = await _gatewayClient.GetObservedPublicIpAsync();
 			CurrentIpText.Text = _currentIp;
@@ -441,7 +460,8 @@ public partial class MainWindow : Window
 			}
 			try
 			{
-				await WindowsFirewallGate.RestoreAsync();
+				using var restoreTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+				await WindowsFirewallGate.RestoreAsync(restoreTimeout.Token);
 			}
 			catch (Exception error)
 			{

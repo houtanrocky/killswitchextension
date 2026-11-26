@@ -8,7 +8,7 @@ Choose **Add site to protect** to create a rule without editing the table. Choos
 
 Download the install package from the [latest GitHub release](https://github.com/houtanrocky/killswitchextension/releases/latest). Extract it and run `Install-KillSwitch.ps1` from an elevated PowerShell session. Setup creates a Start menu shortcut and, by default, a per-user Windows sign-in entry so the app opens visibly and places its icon in the notification area. The **Open Kill Switch when I sign in** setting in the app controls automatic launch. Run `Install-KillSwitch.ps1 -NoStartup` to skip it. Use Add or Remove Programs to uninstall.
 
-Startup brings up the app and makes its current state visible; protection starts only when the user clicks **Start protection** and approves the plain-language notice. The Companion discovers the managed HTTPS service and creates a device key automatically; no gateway address, token, or account is needed. If starting protection fails, the app shows the specific error in a dialog.
+Startup brings up the app and makes its current state visible; protection starts only when the user clicks **Start protection** and approves the plain-language notice. The Companion discovers the managed HTTPS service and creates a device key automatically; no gateway address, token, or account is needed. The app shows progress during activation, gives Windows Firewall up to one minute, and reports the failing step if protection cannot start.
 
 ## Current implementation
 

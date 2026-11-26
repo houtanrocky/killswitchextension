@@ -172,7 +172,17 @@ Remove-Item -LiteralPath $statePath
 		using var process = Process.Start(start) ?? throw new InvalidOperationException("Could not start Windows PowerShell.");
 		var errorOutput = process.StandardError.ReadToEndAsync(cancellationToken);
 		var standardOutput = process.StandardOutput.ReadToEndAsync(cancellationToken);
-		await process.WaitForExitAsync(cancellationToken);
+		try
+		{
+			await process.WaitForExitAsync(cancellationToken);
+		}
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+		{
+			try { if (!process.HasExited) process.Kill(entireProcessTree: true); } catch { }
+			try { await process.WaitForExitAsync(); } catch { }
+			try { await Task.WhenAll(errorOutput, standardOutput); } catch { }
+			throw;
+		}
 		var errors = await errorOutput;
 		var output = await standardOutput;
 		if (process.ExitCode != 0)
