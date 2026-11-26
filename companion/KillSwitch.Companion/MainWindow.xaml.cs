@@ -174,14 +174,40 @@ public partial class MainWindow : Window
 		}
 	}
 
-	private void AddRule_Click(object sender, RoutedEventArgs e)
+	private async void AddRule_Click(object sender, RoutedEventArgs e)
 	{
-		var rule = new AccessRule();
+		if (string.IsNullOrWhiteSpace(_currentIp))
+		{
+			await RefreshCurrentIpAsync();
+			if (string.IsNullOrWhiteSpace(_currentIp))
+			{
+				MessageText.Text = "Check your internet connection, then try adding the site again.";
+				return;
+			}
+		}
+
+		var dialog = new AddRuleWindow(_currentIp) { Owner = this };
+		if (dialog.ShowDialog() != true || dialog.NewRule is not { } rule) return;
+		if (_rules.Any(existing => existing.Target.Equals(rule.Target, StringComparison.OrdinalIgnoreCase)))
+		{
+			MessageText.Text = $"A rule already exists for {rule.Target}. Edit that rule instead.";
+			return;
+		}
+
 		_rules.Add(rule);
-		RulesGrid.SelectedItem = rule;
-		RulesGrid.ScrollIntoView(rule);
-		RulesGrid.BeginEdit();
-		UpdateCount();
+		try
+		{
+			await _repository.SaveAsync(_rules);
+			UpdateRuleStatuses();
+			MessageText.Text = $"Added and saved a rule for {rule.Target}.";
+			await SyncPolicyIfConfiguredAsync();
+		}
+		catch (Exception error)
+		{
+			_rules.Remove(rule);
+			UpdateCount();
+			MessageBox.Show(this, error.Message, "Could not save the rule", MessageBoxButton.OK, MessageBoxImage.Error);
+		}
 	}
 
 	private void RemoveRule_Click(object sender, RoutedEventArgs e)

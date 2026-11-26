@@ -60,7 +60,7 @@
                 <Button x:Name="ImportButton" Content="Import" Click="Import_Click" />
                 <Button x:Name="ExportButton" Content="Export" Click="Export_Click" />
                 <Button x:Name="RefreshIpButton" Content="Check my IP" Click="RefreshIp_Click" />
-                <Button x:Name="AddRuleButton" Content="Add rule" Click="AddRule_Click" />
+                <Button x:Name="AddRuleButton" Content="Add site to protect" Click="AddRule_Click" />
                 <Button x:Name="SaveButton" Content="Save rules" Background="#C94150" BorderBrush="#E45562" Margin="0" Click="Save_Click" />
             </WrapPanel>
         </Grid>
@@ -104,7 +104,7 @@
                 <Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
                     <TextBlock Text="MANAGE BLOCKS" FontSize="10" FontWeight="Bold" Foreground="#9BA9BC" />
-                    <TextBlock Text="Matching rules block page opening and matching requests before they reach the site." FontSize="10" Foreground="#AAB4C3" Margin="0,4,0,0" />
+                    <TextBlock Text="Each site is allowed only from its listed IP addresses. Add a site to fill in your current IP automatically." FontSize="10" Foreground="#AAB4C3" Margin="0,4,0,0" />
                 </StackPanel>
                 <TextBox Grid.Column="1" x:Name="RuleSearchInput" TextChanged="RuleSearch_TextChanged" ToolTip="Search by site, page path, or IP" MinHeight="38" Padding="8" Background="#111722" Foreground="#F4F6FA" BorderBrush="#3B485B" VerticalAlignment="Center" />
             </Grid>
@@ -117,7 +117,7 @@
                   CanUserReorderColumns="False" CanUserResizeRows="False" MinHeight="160">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="SITE OR PAGE TO BLOCK" Binding="{Binding Target, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
-                <DataGridTextColumn Header="IP CONDITIONS" Binding="{Binding IpConditions, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
+                <DataGridTextColumn Header="ALLOWED IP ADDRESSES" Binding="{Binding IpConditions, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
                 <DataGridTextColumn Header="CURRENT IP STATUS" Binding="{Binding CurrentStatus}" IsReadOnly="True" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
