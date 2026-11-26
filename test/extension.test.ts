@@ -50,6 +50,7 @@ function createBrowser({
 	const sentMessages: unknown[] = [];
 	let currentUrl = activeUrl;
 	let storageChangedListener: ((changes: Record<string, unknown>, areaName: string) => void) | undefined;
+	let messageListener: ((request: any) => Promise<unknown> | undefined) | undefined;
 
 	const fakeBrowser = browser as any;
 	vi.spyOn(fakeBrowser.storage.local, "get").mockImplementation(async (...args: any[]) => {
@@ -93,6 +94,9 @@ function createBrowser({
 	vi.spyOn(fakeBrowser.storage.onChanged, "addListener").mockImplementation((listener: any) => {
 		storageChangedListener = listener;
 	});
+	vi.spyOn(fakeBrowser.runtime.onMessage, "addListener").mockImplementation((listener: any) => {
+		messageListener = listener;
+	});
 
 	return {
 		browser: fakeBrowser,
@@ -109,6 +113,9 @@ function createBrowser({
 			await Promise.resolve();
 			await Promise.resolve();
 			await new Promise((resolve) => setTimeout(resolve, 0));
+		},
+		invokeMessage(request: unknown) {
+			return messageListener?.(request);
 		}
 	};
 }
@@ -160,6 +167,9 @@ describe("IP and rule evaluation", () => {
 	test("matches only the configured page pattern", () => {
 		expect(patternMatchesPage("example.com", "https://example.com/path")).toBe(true);
 		expect(patternMatchesPage("example.com", "https://sub.example.com/path")).toBe(false);
+		expect(patternMatchesPage("*.example.com", "https://example.com/path")).toBe(true);
+		expect(patternMatchesPage("*.example.com", "https://sub.example.com/path")).toBe(true);
+		expect(patternMatchesPage("*.example.com", "https://notexample.com/path")).toBe(false);
 		expect(patternMatchesPage("https://example.com/private", "https://example.com/private/child")).toBe(true);
 		expect(patternMatchesPage("https://example.com/private", "https://example.com/public")).toBe(false);
 	});
@@ -306,6 +316,43 @@ describe("background rule refresh", () => {
 		expect(harness.dynamicRules).toHaveLength(1);
 		expect(harness.state.ipProviderUnavailable).toBe(true);
 		expect(harness.state.lastBlockedDomains).toEqual(["example.com"]);
+	});
+
+	test("never uses a cached allowed IP when a fresh lookup fails", async () => {
+		const harness = createBrowser({
+			initialState: {
+				urls: ["example.com"],
+				allowed_ips: ["203.0.113.10|"],
+				lastKnownIp: "203.0.113.10"
+			}
+		});
+		vi.stubGlobal("browser", harness.browser);
+		vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+		await refreshRules("test-stale-ip");
+		expect(harness.dynamicRules).toHaveLength(1);
+		expect(harness.state.lastBlockedDomains).toEqual(["example.com"]);
+		expect(harness.state.ipProviderUnavailable).toBe(true);
+	});
+
+	test("checks the public IP again for every configured page navigation", async () => {
+		const harness = createBrowser({
+			initialState: {
+				urls: ["example.com"],
+				allowed_ips: ["203.0.113.10|"],
+				lastKnownIp: "203.0.113.10"
+			}
+		});
+		vi.stubGlobal("browser", harness.browser);
+		const fetchMock = vi.fn()
+			.mockResolvedValueOnce({ ok: true, status: 200, text: async () => "203.0.113.10" })
+			.mockResolvedValueOnce({ ok: true, status: 200, text: async () => "198.51.100.20" });
+		vi.stubGlobal("fetch", fetchMock);
+		registerBackgroundListeners();
+		expect(await harness.invokeMessage({ type: "check-page", url: "https://example.com/one" }))
+			.toMatchObject({ success: true, blocked: false });
+		expect(await harness.invokeMessage({ type: "check-page", url: "https://example.com/two" }))
+			.toMatchObject({ success: true, blocked: true });
+		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 
 	test("only rule storage changes trigger a background refresh", async () => {

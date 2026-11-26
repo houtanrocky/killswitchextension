@@ -9,7 +9,7 @@
   },
   "storeListing": {
     "title": "Kill Switch Extension",
-    "summary": "Block or allow websites by your public IP. Create rules for domains and individual pages.",
+    "summary": "Create IP-based website rules. Full request-level protection requires the Windows companion and a configured HTTPS gateway.",
     "category": "Privacy & Security",
     "language": "English",
     "homepageUrl": "https://houtanrocky.github.io/killswitchextension/",
@@ -30,7 +30,7 @@
     "analytics": false,
     "configuredTargetsSentToLookup": false,
     "localRuleStorage": true,
-    "cachedIpFallback": true,
+    "cachedIpFallback": false,
     "blocksWhenNoVerifiedIp": true
   },
   "permissions": [

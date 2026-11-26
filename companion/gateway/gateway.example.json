@@ -1,0 +1,7 @@
+{
+  "listen": ":9443",
+  "tlsCertFile": "server.crt",
+  "tlsKeyFile": "server.key",
+  "bearerToken": "replace-with-a-long-random-secret",
+  "rulesFile": "rules.json"
+}

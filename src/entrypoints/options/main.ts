@@ -140,6 +140,22 @@ async function saveChanges(): Promise<void> {
 	}
 }
 
+async function exportSavedRules(): Promise<void> {
+	const rules = await readRules();
+	const payload = {
+		urls: rules.urls,
+		allowed_ips: rules.allowedIps
+	};
+	const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+	const objectUrl = URL.createObjectURL(blob);
+	const download = document.createElement("a");
+	download.href = objectUrl;
+	download.download = "kill-switch-rules.json";
+	download.click();
+	window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+	displayMessage("Saved rules exported for the companion app.");
+}
+
 searchInput?.addEventListener("input", () => {
 	syncDraftsFromDom();
 	searchTerm = searchInput.value.trim().toLowerCase();
@@ -153,6 +169,12 @@ document.getElementById("add")?.addEventListener("click", () => {
 	drafts.push({ domain: "", ips: "" });
 	renderRules();
 	content?.querySelector<HTMLInputElement>(".rule-card:last-of-type .domain_regex")?.focus();
+});
+
+document.getElementById("export")?.addEventListener("click", () => {
+	void exportSavedRules().catch((error) => {
+		displayMessage(error instanceof Error ? error.message : String(error), true);
+	});
 });
 
 document.getElementById("save")?.addEventListener("click", () => {

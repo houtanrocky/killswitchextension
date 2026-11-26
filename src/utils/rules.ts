@@ -135,6 +135,11 @@ export function patternMatchesPage(pattern: unknown, pageUrl: unknown): boolean 
 
 	const pageWithoutProtocol = pageUrl.replace(/^https?:\/\//i, "");
 	const patternWithoutProtocol = trimmed.replace(/^https?:\/\//i, "");
+	const wildcardHost = /^\*\.([a-z0-9.-]+)$/i.exec(trimmed);
+	if (wildcardHost) {
+		const suffix = wildcardHost[1]!.toLowerCase();
+		return page.hostname.toLowerCase() === suffix || page.hostname.toLowerCase().endsWith(`.${suffix}`);
+	}
 
 	if (isPlainHostname(trimmed)) {
 		return page.hostname.toLowerCase() === trimmed;

@@ -144,4 +144,30 @@ describe("options UI", () => {
 		search.dispatchEvent(new Event("input", { bubbles: true }));
 		expect(document.querySelectorAll(".rule-card").length).toBeGreaterThan(1);
 	});
+
+	test("exports saved rules in the companion-compatible format", async () => {
+		setBody(`
+			<div id="message"></div><span id="rule-count"></span><div id="content"></div>
+			<button id="export"></button>
+		`);
+		readRulesMock.mockResolvedValue({
+			urls: ["example.com"],
+			allowedIps: ["203.0.113.10|"]
+		});
+		const createObjectUrl = vi.fn(() => "blob:rules");
+		const revokeObjectUrl = vi.fn();
+		const NativeUrl = globalThis.URL;
+		class MockUrl extends NativeUrl {}
+		Object.assign(MockUrl, { createObjectURL: createObjectUrl, revokeObjectURL: revokeObjectUrl });
+		vi.stubGlobal("URL", MockUrl);
+		const click = vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(() => undefined);
+		await import("~/entrypoints/options/main");
+		await Promise.resolve();
+		(document.getElementById("export") as HTMLButtonElement).click();
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		expect(createObjectUrl).toHaveBeenCalledWith(expect.any(Blob));
+		expect(click).toHaveBeenCalledTimes(1);
+		expect((document.getElementById("message") as HTMLElement).textContent).toContain("exported");
+	});
 });

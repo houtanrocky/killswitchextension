@@ -70,6 +70,7 @@ h2 { margin-bottom: 0; font-size: 22px; letter-spacing: -.02em; }
 .privacy-icon { display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border-radius: 50%; background: #d1f1e6; font-weight: 800; }
 
 .section-heading { margin-bottom: 14px; }
+.section-actions { display: flex; gap: 8px; }
 .search-field { display: grid; gap: 7px; margin-bottom: 14px; color: var(--muted); font-size: 12px; font-weight: 700; }
 .search-field input { background: var(--surface); }
 .rules-list { display: grid; gap: 14px; }

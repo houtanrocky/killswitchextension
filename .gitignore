@@ -34,6 +34,13 @@ yarn.lock
 .output/
 .wxt/
 
+# .NET build artifacts
+**/bin/
+**/obj/
+companion/gateway/.gocache/
+companion/gateway/.gotmp/
+companion/gateway/.telemetry/
+
 # Environment files
 .env
 .env.local

@@ -2,6 +2,7 @@ import { fetchPublicIp } from "./ip";
 import {
 	buildRuleFromPattern,
 	parseStoredIps,
+	patternMatchesPage,
 	RULE_ID_BASE,
 	shouldBlockForIp,
 	type DynamicRule
@@ -15,6 +16,7 @@ interface StoredState {
 	allowed_ips?: unknown;
 	lastBlockedDomains?: unknown;
 	ipVerificationPending?: unknown;
+	ipProviderUnavailable?: unknown;
 }
 
 async function getStoredState(keys: Array<keyof StoredState>): Promise<StoredState> {
@@ -96,7 +98,8 @@ export async function refreshRules(reason = "manual"): Promise<void> {
 
 			let currentIp: string | null = null;
 		try {
-			currentIp = await fetchPublicIp();
+			// Enforcement must never reuse a previous network's IP after a lookup failure.
+			currentIp = await fetchPublicIp({ allowCacheFallback: false });
 		} catch (error) {
 			console.error("All IP providers failed", error);
 		}
@@ -131,12 +134,20 @@ export async function refreshRules(reason = "manual"): Promise<void> {
 		} catch (error) {
 			console.error("Failed to refresh rules", error);
 			try {
-				await applyDynamicRules([]);
-				await updateIconForActivePage([], []);
+				const stored = await getStoredState(["urls"]);
+				const urls = Array.isArray(stored.urls)
+					? stored.urls.filter((url): url is string => typeof url === "string")
+					: [];
+				const failClosedRules = urls
+					.map((pattern, index) => buildRuleFromPattern(pattern, RULE_ID_BASE + index))
+					.filter((rule): rule is DynamicRule => rule !== null);
+				await applyDynamicRules(failClosedRules);
 				await setStoredState({
 					ipProviderUnavailable: true,
+					lastBlockedDomains: urls,
 					ipVerificationPending: false
 				});
+				await updateIconForActivePage(urls, urls);
 			} catch (cleanupError) {
 				console.error("Failed to clear rules after refresh failure", cleanupError);
 			}
@@ -189,6 +200,22 @@ export function registerBackgroundListeners(): void {
 				return { success: true };
 			} catch (error) {
 				return { success: false, error: error instanceof Error ? error.message : String(error) };
+			}
+		}
+		if (request.type === "check-page" && typeof request.url === "string") {
+			try {
+				await refreshRules("page-navigation");
+				const { lastBlockedDomains = [], ipProviderUnavailable = false } = await getStoredState([
+					"lastBlockedDomains",
+					"ipProviderUnavailable"
+				]);
+				const blocked = ipProviderUnavailable === true || (Array.isArray(lastBlockedDomains) && lastBlockedDomains.some(
+					(pattern): pattern is string => typeof pattern === "string" && patternMatchesPage(pattern, request.url)
+				));
+				return { success: true, blocked };
+			} catch (error) {
+				// A failed check is treated as blocked by the content script.
+				return { success: false, blocked: true, error: error instanceof Error ? error.message : String(error) };
 			}
 		}
 		return undefined;

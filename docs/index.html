@@ -21,7 +21,7 @@
           <h1>Keep sensitive sites available only on the connections you trust.</h1>
           <p class="hero-lede">Kill Switch lets you allow or limit domains and individual pages based on your public IP. It is useful for VPN safeguards, trusted-network rules, and focused access control.</p>
           <div class="hero-actions"><a class="button button-primary" href="./support.html#quick-start">Get started</a><a class="button button-secondary" href="./privacy.html">Read the privacy policy</a></div>
-          <p class="microcopy">Rules stay in your browser. The extension uses one necessary public-IP lookup.</p>
+          <p class="microcopy">Rules stay in your browser. Full request-level enforcement needs the Windows Companion and a configured gateway.</p>
         </div>
         <div class="hero-panel" aria-label="Extension status examples">
           <div class="panel-top"><span class="panel-label">CURRENT PAGE</span><span class="status-badge status-green"><i></i>Allowed</span></div>
@@ -43,7 +43,7 @@
       </section>
 
       <section class="split-section page-width">
-        <div><p class="eyebrow">HOW IT WORKS</p><h2>Local rules, one small lookup.</h2><p>When rules need evaluation, Kill Switch checks the public IP reported by <code>api.ipify.org</code>. Website targets and configured rules remain local to the browser.</p><p>If a lookup fails, a previously verified IP may be used. If no verified IP is available, configured targets remain blocked until the IP can be checked.</p></div>
+        <div><p class="eyebrow">HOW IT WORKS</p><h2>Browser rules, with an optional Windows request gate.</h2><p>The extension checks the current public IP and applies browser rules to matching destinations. A browser extension alone cannot control every cross-origin request or replace a network firewall.</p><p>For request-level enforcement, install the <a href="https://github.com/houtanrocky/killswitchextension/releases/latest">Windows Companion</a>, configure an HTTPS gateway, and enable its egress gate. The gateway checks each fetched URL against matching rules. URLs with no matching rule are allowed through.</p></div>
         <ol class="steps"><li><b>Open a page</b><span>Use the popup to see its current status.</span></li><li><b>Create a rule</b><span>Allow or limit a site or only that page.</span></li><li><b>Manage at scale</b><span>Search, edit, and save your rules in the options page.</span></li></ol>
       </section>
 

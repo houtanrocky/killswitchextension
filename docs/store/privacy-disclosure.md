@@ -8,7 +8,9 @@
 
 ## Data sent outside the browser
 
-Only the public-IP lookup request leaves the browser. The lookup service can see the public IP and ordinary request metadata. Kill Switch does not send configured targets, page URLs, browsing history, rule lists, analytics, or tracking identifiers.
+Without the companion, only the public-IP lookup request leaves the browser. The lookup service can see the public IP and ordinary request metadata. Kill Switch does not send configured targets, page URLs, browsing history, rule lists, analytics, or tracking identifiers to that lookup service.
+
+When the optional Windows companion is enabled, browser traffic passes through the HTTPS gateway the user configures. The gateway receives request URLs and request data required to fetch pages, evaluates matching rules using the source IP it observes, and allows requests whose URLs have no matching rule. Users should trust the gateway operator. In-flight requests may complete during an IP change.
 
 ## Permissions
 

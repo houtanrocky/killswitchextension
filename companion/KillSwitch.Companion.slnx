@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="KillSwitch.Companion.Tests/KillSwitch.Companion.Tests.csproj" />
+  <Project Path="KillSwitch.Companion/KillSwitch.Companion.csproj" />
+  <Project Path="KillSwitch.Core/KillSwitch.Core.csproj" />
+</Solution>

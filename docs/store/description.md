@@ -1,29 +1,31 @@
 # Kill Switch Extension
 
-Control website access using your public IP.
+Create website access rules based on your public IP.
 
-Kill Switch lets you allow or limit domains and individual pages based on the network you are connected to. Create rules for trusted home or VPN IPs and keep selected sites limited when your connection changes.
+Kill Switch lets you manage allow and limit rules for domains and individual pages. Use the browser extension to edit rules and see the status of the current page.
+
+## The Windows companion is required for full request protection
+
+The extension by itself is not a network firewall and cannot control every request a webpage makes to other websites. For request-level enforcement, install the **Kill Switch Companion for Windows**, configure a reachable HTTPS gateway, and enable its Windows egress gate. The companion routes browser traffic through the gateway, which evaluates each fetched URL against your rules using the public IP it observes for that request. Add rules for each domain or page you want to restrict; requests to URLs with no matching rule are allowed through the gateway.
+
+The companion can be used without the browser extension to manage rules, but request-level protection requires both the companion and the configured gateway. Requests already in flight when the network IP changes may still complete.
 
 ## Features
 
-- IP-based allow and limit rules for domains or individual pages.
-- One-click actions for the current site or only the current page.
-- Searchable rule manager for large rule lists.
-- Multiple IPv4 conditions per rule. Prefix an IP with `!` to limit the target on that address.
-- Status icon for the current page: green means allowed, red means limited, and gray means no rule matches.
-- Local rule storage with no analytics, tracking, remote fonts, or browsing-history collection.
-- Cross-browser Manifest V3 builds for Chrome and Firefox.
-
-## How it works
-
-The extension checks your public IP with one no-referrer request to `api.ipify.org`, then evaluates the matching local rules. If the lookup fails, a previously verified IP may be used. If no verified IP is available, configured targets remain blocked until an IP can be checked.
+- Create allow and limit rules for domains or individual pages.
+- Apply multiple IPv4 conditions to each rule. Prefix an IP with `!` to limit the target on that address.
+- Use one-click actions for the current site or page and a searchable rule manager.
+- See the current page status in the browser action icon: green means allowed by a matching rule, red means limited, and gray means no rule matches.
+- Import and export rules in a format shared with the Windows companion.
+- Keep rules locally in the browser. No analytics, tracking, remote fonts, or browsing-history collection.
+- Use the extension with Chrome or Firefox. The full Windows egress gate is provided by the separate Windows companion.
 
 ## Privacy
 
-Rules, targets, and status data stay in your browser. The IP lookup service receives the public IP of the network making the request and ordinary request metadata. Your configured domains, page URLs, and rule list are not sent to that service. No account is required.
+Without the companion, the extension checks your public IP through `api.ipify.org`; that service receives the public IP and ordinary request metadata, but not your configured domains, page URLs, or rule list. When using the companion, request URLs and traffic needed for rule evaluation pass through the HTTPS gateway you configure. Review the gateway operator's privacy practices before use. No Kill Switch account is required.
 
 ## Get started
 
-Open a page, open the Kill Switch popup, and choose **Allow site**, **Limit site**, **Allow page**, or **Limit page**. Open **Manage rules** to search, edit, or remove rules.
+Install the extension and choose **Allow site**, **Limit site**, **Allow page**, or **Limit page** from its popup. Open **Manage rules** to search, edit, or remove rules. For full request-level protection, install the [Kill Switch Windows Companion](https://github.com/houtanrocky/killswitchextension/releases/latest) and configure your HTTPS gateway.
 
-For setup help and troubleshooting, visit the [support page](https://houtanrocky.github.io/killswitchextension/support.html). Read the full [privacy policy](https://houtanrocky.github.io/killswitchextension/privacy.html) before installing.
+For setup help, visit the [support page](https://houtanrocky.github.io/killswitchextension/support.html). Read the full [privacy policy](https://houtanrocky.github.io/killswitchextension/privacy.html) before installing.

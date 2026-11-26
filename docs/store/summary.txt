@@ -1,1 +1,1 @@
-Block or allow websites by your public IP. Create rules for domains and individual pages.
+Create IP-based website rules. Full request-level protection requires the Windows companion and a configured HTTPS gateway.
