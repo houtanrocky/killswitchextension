@@ -31,9 +31,11 @@ public partial class App : System.Windows.Application
 		}
 		_instanceMutex = mutex;
 		base.OnStartup(e);
+		ShutdownMode = ShutdownMode.OnExplicitShutdown;
 		var window = new MainWindow();
 		MainWindow = window;
 		CreateTrayIcon(window);
+		window.Closed += (_, _) => Shutdown();
 		window.Show();
 	}
 
@@ -52,7 +54,7 @@ public partial class App : System.Windows.Application
 		var menu = new Forms.ContextMenuStrip();
 		menu.Items.Add("Open Kill Switch", null, (_, _) => ShowMainWindow(window));
 		menu.Items.Add(new Forms.ToolStripSeparator());
-		menu.Items.Add("Exit", null, (_, _) => window.Close());
+		menu.Items.Add("Exit", null, (_, _) => ((MainWindow)window).ExitFromTray());
 		_trayIcon.ContextMenuStrip = menu;
 		_trayIcon.DoubleClick += (_, _) => ShowMainWindow(window);
 	}

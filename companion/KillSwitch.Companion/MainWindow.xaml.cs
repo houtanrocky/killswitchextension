@@ -32,6 +32,7 @@ public partial class MainWindow : Window
 	private GatewayClient? _gatewayClient;
 	private LocalRequestProxy? _requestProxy;
 	private bool _allowWindowClose;
+	private bool _exitRequestedFromTray;
 	private bool _startingProxy;
 	private bool _stoppingProxy;
 
@@ -85,11 +86,25 @@ public partial class MainWindow : Window
 				GatewayStatusText.Text = "Wait for the current routing operation to finish, then close the window again.";
 				return;
 			}
+			if (!_exitRequestedFromTray)
+			{
+				args.Cancel = true;
+				Hide();
+				return;
+			}
 			if (_requestProxy is null) return;
 			args.Cancel = true;
 			_ = StopBeforeCloseAsync();
 		};
 		Closed += (_, _) => _ipRefreshTimer.Stop();
+	}
+
+	public void ExitFromTray()
+	{
+		_exitRequestedFromTray = true;
+		Show();
+		Activate();
+		Close();
 	}
 
 	private async Task<bool> LoadRulesAsync()

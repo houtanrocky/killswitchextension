@@ -2,7 +2,7 @@
 
 The companion is a standalone desktop rule manager. Its local rule file is stored at `%LOCALAPPDATA%\KillSwitch\rules.json`; it does not need the browser extension to edit rules, import/export extension data, or inspect the current public IP.
 
-The app shows its branded icon in the Windows taskbar while the window is open and in the notification area while it is running. Double-click the notification-area icon to reopen the window, or right-click it to open or exit.
+The app shows its branded icon in the Windows taskbar while the window is open and in the notification area while it is running. Closing the window hides it to the notification area, where it keeps running. Double-click the notification-area icon to reopen the window, or right-click it and choose **Exit** to stop the app. If protection is active, Exit first restores the prior firewall and proxy settings.
 
 Download the install package from the [latest GitHub release](https://github.com/houtanrocky/killswitchextension/releases/latest). Extract it and run `Install-KillSwitch.ps1` from an elevated PowerShell session. Setup creates a Start menu shortcut and, by default, a highest-privilege sign-in task so the app opens visibly and reports its protection state at login. Run `Install-KillSwitch.ps1 -NoStartup` to skip automatic launch. Use Add or Remove Programs to uninstall.
 
