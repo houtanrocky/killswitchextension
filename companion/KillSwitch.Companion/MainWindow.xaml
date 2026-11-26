@@ -114,7 +114,10 @@
                   HeadersVisibility="Column" GridLinesVisibility="Horizontal" Background="#151A23" Foreground="#F4F6FA"
                   RowBackground="#151A23" AlternatingRowBackground="#191F2A" BorderBrush="#2D394A" BorderThickness="1"
                   HorizontalGridLinesBrush="#27303D" VerticalGridLinesBrush="#151A23" SelectionMode="Single"
-                  CanUserReorderColumns="False" CanUserResizeRows="False" MinHeight="160">
+                  CanUserReorderColumns="False" CanUserResizeRows="False" MinHeight="160"
+                  EnableRowVirtualization="True" EnableColumnVirtualization="True"
+                  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.CanContentScroll="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="SITE OR PAGE TO BLOCK" Binding="{Binding Target, UpdateSourceTrigger=PropertyChanged}" Width="2*" />
                 <DataGridTextColumn Header="IP RULE" Binding="{Binding IpConditions, UpdateSourceTrigger=PropertyChanged}" Width="2*" />

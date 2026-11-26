@@ -25,6 +25,7 @@ public sealed class LocalRequestProxy(IRequestForwarder forwarder, TlsCertificat
 	private readonly IRequestForwarder _forwarder = forwarder;
 	private readonly TlsCertificateAuthority _certificateAuthority = certificateAuthority;
 	private readonly ConcurrentDictionary<int, Task> _connections = new();
+	private readonly ConcurrentDictionary<int, TcpClient> _clients = new();
 	private readonly ConcurrentDictionary<string, Lazy<X509Certificate2>> _serverCertificates = new(StringComparer.OrdinalIgnoreCase);
 	private readonly CancellationTokenSource _shutdown = new();
 	private TcpListener? _listener;
@@ -63,10 +64,15 @@ public sealed class LocalRequestProxy(IRequestForwarder forwarder, TlsCertificat
 
 			Interlocked.Increment(ref _acceptedConnectionCount);
 			var id = Interlocked.Increment(ref _nextConnectionId);
+			_clients[id] = client;
 			var connectionTask = HandleClientSafelyAsync(client, cancellationToken);
 			_connections[id] = connectionTask;
 			_ = connectionTask.ContinueWith(
-				completed => _connections.TryRemove(id, out var removed),
+				completed =>
+				{
+					_connections.TryRemove(id, out var removedTask);
+					_clients.TryRemove(id, out var removedClient);
+				},
 				CancellationToken.None,
 				TaskContinuationOptions.ExecuteSynchronously,
 				TaskScheduler.Default);
@@ -240,7 +246,12 @@ public sealed class LocalRequestProxy(IRequestForwarder forwarder, TlsCertificat
 		{
 			try { await _acceptLoop; } catch (OperationCanceledException) { }
 		}
+		foreach (var client in _clients.Values)
+		{
+			try { client.Dispose(); } catch { }
+		}
 		await Task.WhenAll(_connections.Values);
+		_clients.Clear();
 		foreach (var certificate in _serverCertificates.Values)
 			if (certificate.IsValueCreated) certificate.Value.Dispose();
 		_serverCertificates.Clear();

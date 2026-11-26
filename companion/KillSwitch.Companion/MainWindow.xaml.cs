@@ -229,8 +229,8 @@ public partial class MainWindow : Window
 
 	private async void Save_Click(object sender, RoutedEventArgs e)
 	{
-		RulesGrid.CommitEdit();
-		RulesGrid.CommitEdit();
+		RulesGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Cell, exitEditingMode: true);
+		RulesGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Row, exitEditingMode: true);
 		for (var index = 0; index < _rules.Count; index++)
 		{
 			var error = AccessRule.Validate(_rules[index]);
@@ -365,8 +365,8 @@ public partial class MainWindow : Window
 				_gatewaySettingsStore.Save(_gatewaySettings);
 			}
 			GatewayStatusText.Text = "Checking your saved rules…";
-			RulesGrid.CommitEdit();
-			RulesGrid.CommitEdit();
+			RulesGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Cell, exitEditingMode: true);
+			RulesGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Row, exitEditingMode: true);
 			for (var index = 0; index < _rules.Count; index++)
 			{
 				var validationError = AccessRule.Validate(_rules[index]);
@@ -449,6 +449,13 @@ public partial class MainWindow : Window
 	{
 		if (_stoppingProxy) return false;
 		_stoppingProxy = true;
+		if (IsLoaded)
+		{
+			StartProxyButton.IsEnabled = false;
+			StopProxyButton.IsEnabled = false;
+			ProtectionStatus.Text = "Stopping protection…";
+			GatewayStatusText.Text = "Restoring your Windows proxy settings…";
+		}
 		try
 		{
 			try { _proxyController.Restore(); }
@@ -460,6 +467,7 @@ public partial class MainWindow : Window
 			}
 			try
 			{
+				if (IsLoaded) GatewayStatusText.Text = "Restoring Windows Firewall settings…";
 				using var restoreTimeout = new CancellationTokenSource(TimeSpan.FromSeconds(30));
 				await WindowsFirewallGate.RestoreAsync(restoreTimeout.Token);
 			}
@@ -477,6 +485,7 @@ public partial class MainWindow : Window
 			}
 			if (_requestProxy is not null)
 			{
+				if (IsLoaded) GatewayStatusText.Text = "Closing active network requests…";
 				await _requestProxy.DisposeAsync();
 				_requestProxy = null;
 			}
