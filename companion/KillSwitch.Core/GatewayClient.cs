@@ -36,7 +36,11 @@ public sealed class GatewayClient : IRequestForwarder, IDisposable
 	{
 		if (endpoint.Scheme != Uri.UriSchemeHttps)
 			throw new ArgumentException("The gateway endpoint must use HTTPS.", nameof(endpoint));
-		using var client = new HttpClient { BaseAddress = new Uri(endpoint.AbsoluteUri.TrimEnd('/') + "/"), Timeout = TimeSpan.FromSeconds(20) };
+		using var client = new HttpClient(new SocketsHttpHandler { UseProxy = false })
+		{
+			BaseAddress = new Uri(endpoint.AbsoluteUri.TrimEnd('/') + "/"),
+			Timeout = TimeSpan.FromSeconds(20)
+		};
 		using var request = new HttpRequestMessage(HttpMethod.Post, "v1/register") { Content = JsonContent.Create(new { }) };
 		request.Headers.ConnectionClose = true;
 		using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
@@ -97,10 +101,11 @@ public sealed class GatewayClient : IRequestForwarder, IDisposable
 
 	private static HttpMessageHandler CreateHandler(IReadOnlyCollection<IPAddress>? addresses)
 	{
-		if (addresses is null || addresses.Count == 0) return new SocketsHttpHandler();
+		if (addresses is null || addresses.Count == 0) return new SocketsHttpHandler { UseProxy = false };
 		var frozenAddresses = addresses.Distinct().ToArray();
 		return new SocketsHttpHandler
 		{
+			UseProxy = false,
 			ConnectCallback = (context, cancellationToken) => ResolvedGatewayConnector.ConnectAsync(context.DnsEndPoint, frozenAddresses, cancellationToken)
 		};
 	}
